@@ -9,7 +9,7 @@ export default function Header() {
     return (
         <header className="bg-white">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1">
+                <div className="flex lg:flex-1 max-sm:hidden" >
                     <a href="#" className="-m-1.5 p-1.5 border-solid border-2 border-hardBlue">
                         <span className="sr-only">Test Project</span>
                         <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
@@ -44,7 +44,7 @@ export default function Header() {
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
                 <div className="fixed inset-0 z-10" />
-                <Dialog.Panel className="fixed inset-y-0  right-0 z-10 w-full md:w-auto overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                <Dialog.Panel className="bg-gray bg-opacity-60 fixed inset-y-0  right-0 z-10 w-full md:w-auto overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
                         <a href="#" className="-m-1.5 p-1.5 border-2 border-hardBlue mx-1">
                             <span className="sr-only">Your Company</span>
