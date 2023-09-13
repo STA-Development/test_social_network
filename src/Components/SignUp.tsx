@@ -1,6 +1,10 @@
 import React, {useState} from "react";
+import firebaseAuth from "../Firebase"
+import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 
 const SignUp = () => {
+    // console.log(firebaseAuth)
+    // console.log(getAuth)
     const [userInfo, setUserInfo] = useState<{
         firstname: string,
         lastname: string,
@@ -12,8 +16,27 @@ const SignUp = () => {
         email:"",
         password: ""
     });
+    // console.log(userInfo)
     const getSignUp = (e:any) => {
         e.preventDefault()
+        const auth = getAuth();
+        console.log(userInfo.email, userInfo.password)
+        createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                console.log(user)
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode,errorMessage)
+                // ..
+            });
+        // if(userInfo.firstname.trim() !== ""){
+        //
+        // }
     }
     return (
         <div>
@@ -48,6 +71,7 @@ const SignUp = () => {
                                     id="firstname"
                                     type="text"
                                     placeholder="input your firstname"
+                                    onChange ={(e) => setUserInfo({...userInfo, firstname:e.target.value} )}
                                 />
                             </div>
                         </div>
@@ -62,6 +86,7 @@ const SignUp = () => {
                                     id="lastname"
                                     type="text"
                                     placeholder="input your lastname"
+                                    onChange = {(e) => setUserInfo({...userInfo, lastname:e.target.value})}
                                 />
                             </div>
                         </div>
@@ -77,6 +102,7 @@ const SignUp = () => {
                                     autoComplete="email"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     placeholder="input your firstname"
+                                    onChange={(e) => setUserInfo({...userInfo,email: e.target.value})}
                                 />
                             </div>
                         </div>
@@ -95,6 +121,7 @@ const SignUp = () => {
                                     type="password"
                                     autoComplete="current-password"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    onChange={(e) => setUserInfo({...userInfo, password:e.target.value})}
                                 />
                             </div>
                         </div>
