@@ -3,18 +3,17 @@ import './App.css';
 import Header from "./Components/Header"
 import Hero from "./Components/Hero";
 import Feaders from "./Components/Feaders";
+import SignIn from "./Components/SignIn";
+import SignUp from "./Components/SignUp";
 
 function App() {
   return (
     <div className="App">
         <Header />
-        {/*<Hero />*/}
+        <Hero />
         <Feaders />
-      {/*<header className="">*/}
-      {/*    <h1 className="text-3xl font-bold underline text-red-600">*/}
-      {/*        Simple React Typescript Tailwind Sample*/}
-      {/*    </h1>*/}
-      {/*</header>*/}
+        <SignIn />
+        <SignUp />
     </div>
   );
 }

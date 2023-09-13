@@ -7,7 +7,7 @@ import {
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     return (
-        <header className="bg-white">
+        <header className="bg-white border-b-2 border-hardBlue">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1 max-sm:hidden" >
                     <a href="#" className="-m-1.5 p-1.5 border-solid border-2 border-hardBlue">
@@ -27,7 +27,7 @@ export default function Header() {
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <Popover className="relative">
-                            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                            <a href="#" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
                                 Feader
                             </a>
                     </Popover>
@@ -38,7 +38,7 @@ export default function Header() {
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                     <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Log in <span aria-hidden="true">&rarr;</span>
+                        Sign in <span aria-hidden="true">&rarr;</span>
                     </a>
                 </div>
             </nav>
@@ -85,7 +85,7 @@ export default function Header() {
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    Log in
+                                    Sing In
                                 </a>
                             </div>
                         </div>

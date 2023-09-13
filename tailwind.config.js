@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     colors: {
       'blue': '#1fb6ff',
+      'soft-blue': 'rgba(31,182,255,0.6)',
       'hardBlue': '#1f66ff',
       'purple': '#7e5bef',
       'pink': '#ff49db',
@@ -16,6 +17,7 @@ module.exports = {
       'gray-dark': '#273444',
       'gray': '#8492a6',
       'gray-light': '#d3dce6',
+      'white-dark': '#faf8f8',
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
@@ -31,6 +33,8 @@ module.exports = {
       }
     }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }
 
