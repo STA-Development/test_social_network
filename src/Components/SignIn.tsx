@@ -1,6 +1,7 @@
 import React from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import Header from "./Header";
+import {Link} from "react-router-dom";
 
 const SignIn = () => {
     return (
@@ -11,13 +12,13 @@ const SignIn = () => {
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <div className="w-full flex justify-center">
                             <div className="w-14 p-1 border-2 border-hardBlue">
-                                <a href="/" >
+                                <Link to="/" >
                                     <img
                                         className="mx-auto h-10 w-auto"
                                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                                         alt="Your Company"
                                     />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -49,9 +50,9 @@ const SignIn = () => {
                                         Password:
                                     </label>
                                     <div className="text-sm">
-                                        <a href="#" className="font-semibold text-hardBlue hover:text-indigo-500">
+                                        <Link to="settings" className="font-semibold text-hardBlue hover:text-indigo-500">
                                             Forgot password?
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="mt-2">
@@ -80,13 +81,13 @@ const SignIn = () => {
                         <div className="mt-10 text-center text-sm text-gray-500">
                             Not a member? then {' '}
                             <p  className="mt-3 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                <a href="signUp" className="cursor-pointer text-hardBlue underline decoration-hardBlue">
+                                <Link to={"/signUp"} className="cursor-pointer text-hardBlue underline decoration-hardBlue">
                                 <button
                                     className = "min-w-4 mx-3 bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-1 rounded transition duration-200 ease-in"
                                 >
                                     sign up
                                 </button>
-                                </a>
+                                </Link>
                             </p>
                         </div>
                         <div className="flex items-center w-full mt-3">

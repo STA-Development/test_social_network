@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import firebaseAuth from "../Firebase"
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 import Header from "./Header";
+import {Link} from "react-router-dom";
 
 const SignUp = () => {
     // console.log(firebaseAuth)
@@ -47,13 +48,13 @@ const SignUp = () => {
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <div className="w-full flex justify-center">
                             <div className="w-14 p-1 border-2 border-hardBlue">
-                                <a href="/" >
+                                <Link to="/" >
                                     <img
                                         className="mx-auto h-10 w-auto"
                                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                                         alt="Your Company"
                                     />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -128,19 +129,6 @@ const SignUp = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="mt-10 text-center text-sm text-gray-500">
-                                you are already a member? then {' '}
-                                <p  className="mt-3 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                    <a href="/signIn" className="cursor-pointer text-hardBlue underline decoration-hardBlue">
-                                        <button
-                                            type="button"
-                                            className = "min-w-4 mx-3 bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-1 rounded transition duration-200 ease-in"
-                                        >
-                                            sign in
-                                        </button>
-                                    </a>
-                                </p>
-                            </div>
                             <div>
                                 <button
                                     type="submit"
@@ -149,6 +137,19 @@ const SignUp = () => {
                                 >
                                     Sign up
                                 </button>
+                            </div>
+                            <div className="mt-10 text-center text-sm text-gray-500">
+                                you are already a member? then {' '}
+                                <p  className="mt-3 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                                    <Link to="/signIn" className="cursor-pointer text-hardBlue underline decoration-hardBlue">
+                                        <button
+                                            type="button"
+                                            className = "min-w-4 mx-3 bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-1 rounded transition duration-200 ease-in"
+                                        >
+                                            sign in
+                                        </button>
+                                    </Link>
+                                </p>
                             </div>
                         </form>
                     </div>
