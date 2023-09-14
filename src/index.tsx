@@ -11,6 +11,8 @@ import {
 import ErrorPage from "./Components/Error";
 import Feaders from './Components/Feaders';
 import SignIn from "./Components/SignIn";
+import PostControll from "./Components/PostControll";
+import SignUp from "./Components/SignUp";
 
 
 
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
     {
         path: "signIn",
         element: <SignIn />
+    },
+    {
+        path: "signUp",
+        element: <SignUp />
+    },
+    {
+        path: "posts",
+        element: <PostControll />
     }
 ]);
 const root = ReactDOM.createRoot(

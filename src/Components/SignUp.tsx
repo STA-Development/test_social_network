@@ -47,7 +47,7 @@ const SignUp = () => {
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <div className="w-full flex justify-center">
                             <div className="w-14 p-1 border-2 border-hardBlue">
-                                <a href="#" >
+                                <a href="/" >
                                     <img
                                         className="mx-auto h-10 w-auto"
                                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -129,9 +129,16 @@ const SignUp = () => {
                                 </div>
                             </div>
                             <div className="mt-10 text-center text-sm text-gray-500">
-                                Already have an account?{' '}
-                                <p  className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                    then sign in <a href="#" className="cursor-pointer text-hardBlue underline decoration-hardBlue">here</a>
+                                you are already a member? then {' '}
+                                <p  className="mt-3 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                                    <a href="/signIn" className="cursor-pointer text-hardBlue underline decoration-hardBlue">
+                                        <button
+                                            type="button"
+                                            className = "min-w-4 mx-3 bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-1 rounded transition duration-200 ease-in"
+                                        >
+                                            sign in
+                                        </button>
+                                    </a>
                                 </p>
                             </div>
                             <div>
