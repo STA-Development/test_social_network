@@ -10,7 +10,7 @@ export default function Header() {
         <header className="bg-white border-b-2 border-hardBlue">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1 max-sm:hidden" >
-                    <a href="#" className="-m-1.5 p-1.5 border-solid border-2 border-hardBlue">
+                    <a href="/" className="-m-1.5 p-1.5 border-solid border-2 border-hardBlue">
                         <span className="sr-only">Test Project</span>
                         <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
                     </a>
@@ -27,17 +27,17 @@ export default function Header() {
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <Popover className="relative">
-                            <a href="#" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
+                            <a href="feaders" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
                                 Feader
                             </a>
                     </Popover>
 
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                    <a href="posts" className="text-sm font-semibold leading-6 text-gray-900">
                         Posts
                     </a>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                    <a href="signIn" className="text-sm font-semibold leading-6 text-gray-900">
                         Sign in <span aria-hidden="true">&rarr;</span>
                     </a>
                 </div>
@@ -46,7 +46,7 @@ export default function Header() {
                 <div className="fixed inset-0 z-10" />
                 <Dialog.Panel className="bg-gray bg-opacity-60 fixed inset-y-0  right-0 z-10 w-full md:w-auto overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5 border-2 border-hardBlue mx-1">
+                        <a href="/" className="-m-1.5 p-1.5 border-2 border-hardBlue mx-1">
                             <span className="sr-only">Your Company</span>
                             <img
                                 className="h-8 w-auto"
@@ -67,22 +67,22 @@ export default function Header() {
                         <div className="-my-6 divide-y divide-gray-500/10">
                             <div className="space-y-2 py-6">
                                 <a
-                                    href="#"
+                                    href="feaders"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Feader
                                 </a>
                                 <a
-                                    href="#"
+                                    href="posts"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    Product
+                                    Posts
                                 </a>
 
                             </div>
                             <div className="py-6">
                                 <a
-                                    href="#"
+                                    href="signIn"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Sing In
