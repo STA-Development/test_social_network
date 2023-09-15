@@ -1,4 +1,5 @@
 import React from "react";
+import CommentSection from "../Components/CommentSection";
 
 const Hero = () => {
     return (

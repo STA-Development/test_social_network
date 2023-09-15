@@ -1,6 +1,6 @@
 import React from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
-import Header from "./Header";
+import Header from "../Components/Header";
 import {Link} from "react-router-dom";
 
 const SignIn = () => {

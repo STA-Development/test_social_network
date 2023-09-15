@@ -8,11 +8,13 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import ErrorPage from "./Components/Error";
-import Feaders from './Components/Feaders';
-import SignIn from "./Components/SignIn";
-import PostControll from "./Components/PostControll";
-import SignUp from "./Components/SignUp";
+import ErrorPage from "./Pages/Error";
+import Feaders from './Pages/Feaders';
+import SignIn from "./Pages/SignIn";
+import PostControll from "./Pages/PostControll";
+import SignUp from "./Pages/SignUp";
+import { Provider } from 'react-redux'
+import store from "./Redux/store"
 
 
 
@@ -40,11 +42,16 @@ const router = createBrowserRouter([
         element: <PostControll />
     }
 ]);
+
+
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-    <RouterProvider router={router}/>
+    <Provider store={store}>
+        <RouterProvider router={router}/>
+    </Provider>
 );
 
 

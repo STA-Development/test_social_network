@@ -1,5 +1,5 @@
 import React from "react"
-import Header from "./Header";
+import Header from "../Components/Header";
 import Feaders from "./Feaders";
 
 const PostControll = () => {
@@ -8,7 +8,7 @@ const PostControll = () => {
             <Header />
             <div className="w-full px-3 py-8">
                 <div className="w-full flex flex-col justify-center items-center mb-3">
-                    <h1 className="text-3xl uppercase text-center">Create post and share with you experience with other</h1>
+                    <h1 className="text-3xl uppercase text-center">Share your experience with others</h1>
                     <hr className="w-3/5 mt-3 mb-3 border-t border-hardBlue"/>
                 </div>
                 <div className="w-full flex justify-center">

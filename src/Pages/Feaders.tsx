@@ -1,7 +1,8 @@
 import React from "react";
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import Header from "./Header";
+import Header from "../Components/Header";
+import CommentSection from "../Components/CommentSection";
 
 const Feaders = () => {
     return (
@@ -9,7 +10,7 @@ const Feaders = () => {
             <Header />
             <div className="w-full flex justify-center flex-col items-center mt-3 mb-3">
                 <div className="w-2/4 border-b-2 border-hardBlue mt-3 mb-3"></div>
-                <div className="w-5/12 p-6 border-2 border-hardBlue">
+                <div className="w-5/12 p-3 border-2 border-hardBlue">
                     <div className="w-full flex justify-start mb-6">
                         <div className="flex flex-row">
                             <AccountCircleRoundedIcon className="!text-6xl" />
@@ -59,6 +60,7 @@ const Feaders = () => {
                             <ThumbUpOutlinedIcon />
                         </button>
                     </div>
+                    <CommentSection />
 
                 </div>
             </div>

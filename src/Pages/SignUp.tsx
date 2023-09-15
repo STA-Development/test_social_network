@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import firebaseAuth from "../Firebase"
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
-import Header from "./Header";
+import Header from "../Components/Header";
 import {Link} from "react-router-dom";
 
 const SignUp = () => {
