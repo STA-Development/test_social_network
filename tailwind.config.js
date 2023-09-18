@@ -10,6 +10,7 @@ module.exports = {
       'soft-blue': 'rgba(31,182,255,0.6)',
       'hardBlue': '#1f66ff',
       'purple': '#7e5bef',
+      "red": '#ef0c0c',
       'pink': '#ff49db',
       'orange': '#ff7849',
       'green': '#13ce66',

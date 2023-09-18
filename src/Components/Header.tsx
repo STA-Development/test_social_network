@@ -27,14 +27,16 @@ export default function Header() {
                     </button>
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
-                    <Popover className="relative">
-                            <Link to="/feaders" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
+                    <Link to="/feaders" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
                                 Feader
-                            </Link>
-                    </Popover>
+                    </Link>
 
                     <Link to="/posts" className="text-sm font-semibold leading-6 text-gray-900">
                         Posts
+                    </Link>
+
+                    <Link to="/Profile" className="text-sm font-semibold leading-6 text-gray-900">
+                        Profile
                     </Link>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -78,6 +80,12 @@ export default function Header() {
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Posts
+                                </Link>
+                                <Link
+                                    to="/Profile"
+                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                >
+                                    Profile
                                 </Link>
 
                             </div>

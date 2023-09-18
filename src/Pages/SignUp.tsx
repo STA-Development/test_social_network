@@ -1,48 +1,54 @@
 import React, {useState} from "react";
-import firebaseAuth from "../Firebase"
-import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 import Header from "../Components/Header";
-import {Link} from "react-router-dom";
+import {Link,useNavigate,useNavigation} from "react-router-dom";
+import { createUser} from "../Service/firebase/userAuth";
+import {useAppDispatch} from "../Hooks/hook";
+import {Puff} from "react-loader-spinner";
+import {Alert} from "@mui/material";
+import {userAuth} from "../Redux/Store/auth/authSlice";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 const SignUp = () => {
-    // console.log(firebaseAuth)
-    // console.log(getAuth)
-    const [userInfo, setUserInfo] = useState<{
-        firstname: string,
-        lastname: string,
-        email: string,
-        password: string,
-    }>({
-        firstname:"",
-        lastname:"",
-        email:"",
-        password: ""
-    });
-    // console.log(userInfo)
-    const getSignUp = (e:any) => {
+    const navigate = useNavigate()
+    const navigation = useNavigation()
+    const [userName, setUserName] = useState<string>("")
+    const [email,setEmail] = useState<string>("")
+    const [password,setPassword] = useState<string>("")
+    const [errorMessage, setErrorMessage] = useState<string>("")
+    const dispatch = useAppDispatch()
+
+    // https://stackoverflow.com/questions/60635093/react-formeventhtmlformelement-form-input-props-types
+    const SignUp = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
         e.preventDefault()
-        const auth = getAuth();
-        console.log(userInfo.email, userInfo.password)
-        createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user)
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode,errorMessage)
-                // ..
-            });
-        // if(userInfo.firstname.trim() !== ""){
-        //
-        // }
+        setErrorMessage("")
+        try {
+            const user = await createUser(email,password,userName)
+            const auth = getAuth();
+            console.log(auth.currentUser?.uid, 222)
+            console.log(user)
+            // dispatch(userAuth(user))
+            navigate("/feaders")
+        }catch (e:any) {
+            setErrorMessage(e.message)
+            console.log(e.message)
+        }
     }
     return (
         <>
             <Header />
+            {/* TODO: make loading spinner */}
+            {   navigation.state === "loading" &&
+                <Puff
+                    height="80"
+                    width="80"
+                    radius={1}
+                    color="#4fa94d"
+                    ariaLabel="puff-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                />
+            }
             <div>
                 <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -63,37 +69,26 @@ const SignUp = () => {
                     </div>
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form onSubmit={(e)=> getSignUp(e)} className="space-y-6" action="#" method="POST">
+                        {errorMessage &&
+                            <Alert className="!transition ease-in duration-200" severity="error">{errorMessage}</Alert>
+                        }
+                        <form onSubmit={(e)=> SignUp(e)} className="space-y-6" action="#" method="POST">
                             <div>
-                                <label htmlFor="firstname" className="block leading-6 text-left text-sm font-medium text-gray-900">
-                                    FirstName:
+                                <label htmlFor="username" className="block leading-6 text-left text-sm font-medium text-gray-900">
+                                    UserName:
                                 </label>
                                 <div className="mt-2">
                                     <input
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        name="firstname"
-                                        id="firstname"
+                                        name="username"
+                                        id="username"
                                         type="text"
                                         placeholder="input your firstname"
-                                        onChange ={(e) => setUserInfo({...userInfo, firstname:e.target.value} )}
+                                        onChange ={(e) => setUserName(e.target.value)}
                                     />
                                 </div>
                             </div>
-                            <div>
-                                <label htmlFor="lastname" className="block leading-6 text-left text-sm font-medium text-gray-900">
-                                    LastName:
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        name="firstname"
-                                        id="lastname"
-                                        type="text"
-                                        placeholder="input your lastname"
-                                        onChange = {(e) => setUserInfo({...userInfo, lastname:e.target.value})}
-                                    />
-                                </div>
-                            </div>
+
                             <div>
                                 <label htmlFor="email" className="block text-left text-sm font-medium leading-6 text-gray-900">
                                     Email address:
@@ -106,7 +101,7 @@ const SignUp = () => {
                                         autoComplete="email"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         placeholder="input your firstname"
-                                        onChange={(e) => setUserInfo({...userInfo,email: e.target.value})}
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -125,7 +120,7 @@ const SignUp = () => {
                                         type="password"
                                         autoComplete="current-password"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        onChange={(e) => setUserInfo({...userInfo, password:e.target.value})}
+                                        onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
                             </div>

@@ -1,9 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import Header from "../Components/Header";
-import {Link} from "react-router-dom";
+import {authWithGoogle, signIn} from "../Service/firebase/userAuth";
+import {Link, useNavigate} from "react-router-dom";
+import {Alert} from "@mui/material";
+import {redirect} from "react-router";
 
 const SignIn = () => {
+    const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const handleSignIn = async (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        try {
+            const singIn =  await signIn(email,password)
+            setErrorMessage("")
+            navigate("/")
+        }catch(e:any) {
+            console.error(e.message)
+            setErrorMessage(e.message)
+        }
+    }
     return (
         <>
             <Header />
@@ -27,13 +45,19 @@ const SignIn = () => {
                     </div>
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form className="space-y-6" action="#" method="POST">
+                        <form onSubmit={(e)=> handleSignIn(e)} className="space-y-6" action="#" method="POST">
+                            <div>
+                                {errorMessage &&
+                                    <Alert className="!transition ease-in duration-200" severity="error">{errorMessage}</Alert>
+                                }
+                            </div>
                             <div>
                                 <label htmlFor="email" className="block text-left text-sm font-medium leading-6 text-gray-900">
                                     Email address:
                                 </label>
                                 <div className="mt-2">
                                     <input
+                                        onChange ={(e)=> setEmail(e.target.value)}
                                         id="email"
                                         name="email"
                                         type="email"
@@ -49,14 +73,11 @@ const SignIn = () => {
                                     <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                         Password:
                                     </label>
-                                    <div className="text-sm">
-                                        <Link to="settings" className="font-semibold text-hardBlue hover:text-indigo-500">
-                                            Forgot password?
-                                        </Link>
-                                    </div>
+
                                 </div>
                                 <div className="mt-2">
                                     <input
+                                        onChange ={(e)=> setPassword(e.target.value)}
                                         id="password"
                                         name="password"
                                         type="password"
@@ -70,7 +91,6 @@ const SignIn = () => {
                             <div>
                                 <button
                                     type="submit"
-                                    // className = "bg-hardBlue hover:bg-blue text-white-dark font-bold py-2 px-4 border-b-4 border-hardBlue hover:border-hardBlue rounded"
                                     className = "w-full bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in"
                                 >
                                     Sign in
@@ -96,7 +116,10 @@ const SignIn = () => {
                             <hr className="flex-grow border-t border-gray-300"/>
                         </div>
                         <div className="w-full mt-3 flex items-center justify-center">
-                            <button className="flex items-center p-3 border-2 border-hardBlue hover:bg-soft-blue transition duration-200 ease-in ">
+                            <button
+                                onClick={()=> authWithGoogle()}
+                                className="flex items-center p-3 border-2 border-hardBlue hover:bg-soft-blue transition duration-200 ease-in "
+                            >
                                 <GoogleIcon />
                                 <p className="ml-3">Sign in With Google</p>
                             </button>
