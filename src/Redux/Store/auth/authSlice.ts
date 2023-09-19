@@ -17,12 +17,14 @@ export const authSlice = createSlice({
             state.auth = payload
             console.log(state.auth)
         },
-
+        userLogOut: state => {
+            state.auth = null
+        }
     }
 
 })
 
 
-export const {userAuth} = authSlice.actions
+export const {userAuth,userLogOut} = authSlice.actions
 
 export default authSlice.reducer

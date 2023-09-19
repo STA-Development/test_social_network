@@ -16,7 +16,7 @@ const SignIn = () => {
         try {
             const singIn =  await signIn(email,password)
             setErrorMessage("")
-            navigate("/")
+            navigate("/Profile")
         }catch(e:any) {
             console.error(e.message)
             setErrorMessage(e.message)

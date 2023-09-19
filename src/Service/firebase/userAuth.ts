@@ -15,11 +15,28 @@ import auth from "../../Firebase"
 const provider:GoogleAuthProvider = new GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
+
+
+
 export const createUser = (email:string,password:string,userName:string) => {
     return createUserWithEmailAndPassword(auth,email,password)
-    //         .then(()=>signInWithEmailAndPassword(auth,email,password)
-    //             .then(() => updateProfile(<User>auth.currentUser, {displayName:userName}))
-    // )
+        .then((userCredential) => {
+            const user = userCredential.user;
+            if (user) {
+                return updateProfile(user, { displayName: userName })
+                    .then(() => user)
+                    .catch((error) => {
+                        console.error('Error updating profile:', error);
+                    });
+            } else {
+                console.error('User not found after creation');
+                return null;
+            }
+        })
+        .catch((error) => {
+            console.error('Error creating user:', error);
+            return null;
+        });
 }
 export const authStateChanged = ():any=> {
     onAuthStateChanged(auth, (currentUser:object | null):object | null => {
@@ -59,10 +76,3 @@ export const authWithGoogle = ()=>{
     // console.log(redirectResults)
 }
 
-//TODO fix this part
-// useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, (currentUser) =>{
-//         console.log(currentUser)
-//     })
-//     return () => unsubscribe()
-// }, [])

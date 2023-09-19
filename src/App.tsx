@@ -11,9 +11,9 @@ import PostControll from "./Pages/PostControll";
 import SignUp from "./Pages/SignUp";
 import {useAppDispatch, useAppSelector} from "./Hooks/hook";
 import Profile from "./Pages/Profile";
-import {authStateChanged, logOut} from "./Service/firebase/userAuth";
 import auth from "./Firebase";
-import {userAuth} from "./Redux/Store/auth/authSlice";
+import {userAuth, userLogOut} from "./Redux/Store/auth/authSlice";
+import PrivateRoutes from "./Components/PrivateRoutes";
 
 
 
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage message={null} />
   },
   {
     path: "feaders",
@@ -39,11 +39,11 @@ const router = createBrowserRouter([
   },
   {
     path: "posts",
-    element: <PostControll />
+    element: <PrivateRoutes elements={<PostControll />}/>
   },
   {
     path:"Profile",
-    element: <Profile />
+    element: <PrivateRoutes elements={<Profile />}/>
   }
 ]);
 
@@ -62,10 +62,9 @@ function App() {
         }))
       }
       else{
-        dispatch(userAuth({}))
+        dispatch(userLogOut())
       }
     })
-    console.log(user)
   },[])
 
   return (

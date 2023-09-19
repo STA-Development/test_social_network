@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Header from "../Components/Header";
 import {Link,useNavigate,useNavigation} from "react-router-dom";
-import { createUser} from "../Service/firebase/userAuth";
+import {createUser} from "../Service/firebase/userAuth";
 import {useAppDispatch} from "../Hooks/hook";
 import {Puff} from "react-loader-spinner";
 import {Alert} from "@mui/material";
@@ -15,7 +15,6 @@ const SignUp = () => {
     const [email,setEmail] = useState<string>("")
     const [password,setPassword] = useState<string>("")
     const [errorMessage, setErrorMessage] = useState<string>("")
-    const dispatch = useAppDispatch()
 
     // https://stackoverflow.com/questions/60635093/react-formeventhtmlformelement-form-input-props-types
     const SignUp = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
@@ -24,10 +23,7 @@ const SignUp = () => {
         try {
             const user = await createUser(email,password,userName)
             const auth = getAuth();
-            console.log(auth.currentUser?.uid, 222)
-            console.log(user)
-            // dispatch(userAuth(user))
-            navigate("/feaders")
+            navigate("/Profile")
         }catch (e:any) {
             setErrorMessage(e.message)
             console.log(e.message)
