@@ -11,7 +11,6 @@ const Profile = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const user:any = useAppSelector(state => state.auth.auth || null)
-    console.log(user)
     const handleSignOut = async() => {
         try {
             const out = await logOut()

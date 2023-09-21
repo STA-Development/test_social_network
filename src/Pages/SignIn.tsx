@@ -4,7 +4,6 @@ import Header from "../Components/Header";
 import {authWithGoogle, signIn} from "../Service/firebase/userAuth";
 import {Link, useNavigate} from "react-router-dom";
 import {Alert} from "@mui/material";
-import {redirect} from "react-router";
 
 const SignIn = () => {
     const navigate = useNavigate()
@@ -22,6 +21,15 @@ const SignIn = () => {
             setErrorMessage(e.message)
         }
     }
+    const handleGoogleAuth = async (): Promise<void> => {
+        try {
+            const googleAuthUser = await authWithGoogle()
+            navigate("/profile")
+        }catch(error:any) {
+            console.error(error.message)
+        }
+    }
+
     return (
         <>
             <Header />
@@ -117,7 +125,8 @@ const SignIn = () => {
                         </div>
                         <div className="w-full mt-3 flex items-center justify-center">
                             <button
-                                onClick={()=> authWithGoogle()}
+                                type="button"
+                                onClick={()=> handleGoogleAuth()}
                                 className="flex items-center p-3 border-2 border-hardBlue hover:bg-soft-blue transition duration-200 ease-in "
                             >
                                 <GoogleIcon />

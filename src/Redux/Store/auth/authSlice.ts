@@ -15,7 +15,6 @@ export const authSlice = createSlice({
     reducers: {
         userAuth: (state, {payload}:PayloadAction<object>):void => {
             state.auth = payload
-            console.log(state.auth)
         },
         userLogOut: state => {
             state.auth = null

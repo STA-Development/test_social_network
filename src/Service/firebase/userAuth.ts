@@ -4,7 +4,7 @@ import {
     signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
-    signInWithRedirect,
+    signInWithPopup,
     getRedirectResult,
     updateProfile, getAuth
 } from "firebase/auth"
@@ -18,7 +18,7 @@ provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 
 
-export const createUser = (email:string,password:string,userName:string) => {
+export const createUser = async (email:string,password:string,userName:string) => {
     return createUserWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -43,24 +43,26 @@ export const authStateChanged = ():any=> {
         return currentUser
     })
 }
-export const signIn = (email:string,password:string) => {
-    return signInWithEmailAndPassword(auth,email,password)
+export const signIn = async (email:string,password:string) => {
+    const user = await signInWithEmailAndPassword(auth,email,password)
+    return user
 }
 
 export const logOut = () => {
     return signOut(auth)
 }
 
-export const authWithGoogle = ()=>{
-    signInWithRedirect(auth, provider);
+export const authWithGoogle = async ()=>{
+    await signInWithPopup(auth, provider);
     // const redirectResults = getRedirectResult(auth)
     //     .then((result) => {
     //         // This gives you a Google Access Token. You can use it to access Google APIs.
+    //
     //         const credential = GoogleAuthProvider.credentialFromResult(result);
-    //         const token = credential.accessToken;
+    //         const token = credential?.accessToken;
     //
     //         // The signed-in user info.
-    //         const user = result.user;
+    //         const user = result?.user;
     //         // IdP data available using getAdditionalUserInfo(result)
     //         // ...
     //     }).catch((error) => {

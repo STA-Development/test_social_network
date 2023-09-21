@@ -14,6 +14,7 @@ import Profile from "./Pages/Profile";
 import auth from "./Firebase";
 import {userAuth, userLogOut} from "./Redux/Store/auth/authSlice";
 import PrivateRoutes from "./Components/PrivateRoutes";
+import axios from "axios";
 
 
 
@@ -49,12 +50,24 @@ const router = createBrowserRouter([
 
 
 function App() {
-  const user = useAppSelector(state => state.auth)
-
+  const user = useAppSelector(state => state.auth )
   const dispatch = useAppDispatch()
   useEffect(()=> {
     auth.onAuthStateChanged(authUser => {
       if(authUser){
+        authUser.getIdTokenResult().then(result=> {
+          const token = result.token
+          // console.log(typeof token)
+          const request = axios.get("http://localhost:3000/hello",{
+            headers:{
+              Authorization: `Bearer ${token}`
+            }
+          }).then(data => {
+            console.log(data)
+          }).catch(e => console.log(e.message))
+
+        }).catch(error => console.error("something wrong: " + error.message));
+
         dispatch(userAuth({
           uId: authUser.uid,
           email: authUser.email,
@@ -68,7 +81,7 @@ function App() {
   },[])
 
   return (
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
   );
 }
 
