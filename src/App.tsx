@@ -57,22 +57,21 @@ function App() {
       if(authUser){
         authUser.getIdTokenResult().then(result=> {
           const token = result.token
-          // console.log(typeof token)
-          const request = axios.get("http://localhost:3000/hello",{
+          const request: Promise<void> = axios.get("http://localhost:3000/userAuth/verifyUser",{
             headers:{
               Authorization: `Bearer ${token}`
             }
-          }).then(data => {
-            console.log(data)
+          }).then(response => {
+            const data = response.data
+            dispatch(userAuth({
+              uId: data.user_id,
+              email: data.email,
+              name: data.name,
+              picture: data.picture
+            }))
           }).catch(e => console.log(e.message))
 
         }).catch(error => console.error("something wrong: " + error.message));
-
-        dispatch(userAuth({
-          uId: authUser.uid,
-          email: authUser.email,
-          name: authUser.displayName
-        }))
       }
       else{
         dispatch(userLogOut())
