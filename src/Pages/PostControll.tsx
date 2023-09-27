@@ -10,7 +10,7 @@ const PostControll = () => {
     const [postData, setPostData] = useState<Post>({
         title: '',
         description: '',
-        photo: '',
+        photo:{},
         userId: user?.uId,
     })
     const [userPost, setUserPost] = useState<UserPost[]>([]);
@@ -20,6 +20,7 @@ const PostControll = () => {
             if (user?.uId !== '') {
                 axios.get(`http://localhost:3000/post/userPosts/${user?.uId}`)
                 .then((response:AxiosResponse<UserPost[]>): void => {
+                    console.log(response.data)
                     setUserPost([...response.data])
                 }).catch((error:AxiosError): void => {
                     console.log(error.message)
@@ -30,12 +31,17 @@ const PostControll = () => {
     }, [user])
     const handlePostSubmit = (e: FormEvent): void => {
         e.preventDefault()
+        const postFormData = new FormData();
+        postFormData.append('title', postData.title);
+        postFormData.append('description', postData.description);
+        postFormData.append('photo', postData.photo);
+        postFormData.append('userId', user?.uId as string);
         axios.post("http://localhost:3000/post/createPost", {
             title: postData.title,
             description: postData.description,
             photo: postData.photo,
-            userId: user?.uId
-        }).then((request) => {
+            userId: user?.uId,
+        }).then((request: AxiosResponse) => {
             console.log(request)
             setUserPost([...userPost,{...request.data}])
         }).catch((reject) => {
@@ -76,7 +82,8 @@ const PostControll = () => {
                         <div className="flex flex-col">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="image">Add image to your post:</label>
                             <input
-                                onChange={(e) => setPostData({...postData,photo:e.target.value})}
+                                name={'file'}
+                                onChange={(e) => setPostData({...postData,photo:e.target.files})}
                                 className="block w-full bg-white p-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="file"
                                 id="image"

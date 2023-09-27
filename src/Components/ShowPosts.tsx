@@ -3,6 +3,7 @@ import {UserPost} from "../types/typeSection";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import CommentSection from "./CommentSection";
+import {DataEditor} from "../Helpers";
 
 interface props {
     userPost?: UserPost[]
@@ -13,9 +14,8 @@ const ShowPosts:React.FC<props> = ({userPost}) => {
     return (
         <div>
             {userPost?.map((post,i) => {
-                console.log(post, "Sad")
                 return(
-                    <div key={i} className="w-full flex justify-center flex-col items-center mt-3 mb-3">
+                    <div key={i} className="w-full flex justify-center flex-col items-center mt-3 mb-3 pb-5">
                         <div className="w-2/4 border-b-2 border-hardBlue mt-3 mb-3"></div>
                         <div className="w-5/12 p-3 border-2 border-hardBlue">
                             <div className="w-full flex justify-start mb-6">
@@ -23,16 +23,16 @@ const ShowPosts:React.FC<props> = ({userPost}) => {
                                     <AccountCircleRoundedIcon className="!text-6xl" />
                                     <div className="ml-3">
                                         <p>Jhone doe</p>
-                                        <p>22/09/2023</p>
+                                        <p>Posted At: {DataEditor(post.createdAt)}</p>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <p className="text-left border-b-2 mb-3 border-hardBlue">{post.title}</p>
-                                {/*<p className="text-left text-2xl ">{post.description}</p>*/}
+                                <p className="text-left text-2xl border-b-2 mb-3 border-hardBlue">{post.title}:</p>
+                                {/*<p className="text-left  ">{post.description}</p>*/}
                             </div>
                             <div className="flex h-full w-full bg-blue-400 justify-center items-center">
-                                <img className="object-cover h-48"  src="https://images.squarespace-cdn.com/content/v1/57263bf8f8baf385ff61bb09/1535668320137-NZQPOXCGLFT34I9E4Z1E/Screen+Shot+2018-08-30+at+6.17.10+PM.png" alt=""/>
+                                <img className="object-cover h-48"  src={post.photo} alt=""/>
                             </div>
 
                             <div className="mt-5 mb-3">
@@ -62,10 +62,10 @@ const ShowPosts:React.FC<props> = ({userPost}) => {
                                         alt=""
                                     />
                                 </div>
-                                <button className="flex justify-center items-center transition   duration-150 ease-in-out  bg-transparent hover:bg-blue-500 text-hardBlue font-semibold hover:text-green py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                                    <span className="mt-1 mr-1">Follow</span>
-                                    <ThumbUpOutlinedIcon />
-                                </button>
+                                {/*<button className="flex justify-center items-center transition   duration-150 ease-in-out  bg-transparent hover:bg-blue-500 text-hardBlue font-semibold hover:text-green py-2 px-4 border border-blue-500 hover:border-transparent rounded">*/}
+                                {/*    <span className="mt-1 mr-1">Follow</span>*/}
+                                {/*    <ThumbUpOutlinedIcon />*/}
+                                {/*</button>*/}
                             </div>
                             <CommentSection />
 
@@ -73,7 +73,7 @@ const ShowPosts:React.FC<props> = ({userPost}) => {
                     </div>
                 )
             })}
-
+            {userPost?.length === 0 ? <div className={"w-full flex justify-center text-2xl"}><h1>You have no posts</h1></div> : ""}
         </div>
     );
 };

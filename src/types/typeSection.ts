@@ -8,7 +8,7 @@ export interface User {
 export type Post = {
     title: string
     description: string
-    photo: string
+    photo: any //TODO FIX this SHit
     userId: string | undefined
 }
 
@@ -17,4 +17,7 @@ export type UserPost = {
     title: string
     description: string
     photo: string
+    createdAt: string
+    updatedAt: string
+    userId: number
 }
