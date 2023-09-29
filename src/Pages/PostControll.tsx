@@ -4,6 +4,7 @@ import {Post, User, UserPost} from "../types/typeSection";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {useAppSelector} from "../Hooks/hook";
 import ShowPosts from "../Components/ShowPosts";
+import {createPost, getCurrentUserPosts} from "../Service/User/RequestsForUsers";
 
 const PostControll = () => {
     const user:User | null =  useAppSelector(state => state.auth.auth)
@@ -14,41 +15,30 @@ const PostControll = () => {
         userId: user?.uId,
     })
     const [userPost, setUserPost] = useState<UserPost[]>([]);
-    // console.log(user)
     useEffect(()=> {
         (async () => {
             if (user?.uId !== '') {
-                axios.get(`http://localhost:3000/post/userPosts/${user?.uId}`)
-                .then((response:AxiosResponse<UserPost[]>): void => {
-                    console.log(response.data)
-                    setUserPost([...response.data])
-                }).catch((error:AxiosError): void => {
-                    console.log(error.message)
-                })
+                const Posts = await getCurrentUserPosts(user)
+                console.log(Posts)
+                setUserPost([...Posts])
             }
         })()
-
     }, [user])
-    const handlePostSubmit = (e: FormEvent): void => {
+    const handlePostSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault()
-        const postFormData = new FormData();
+        const postFormData: FormData = new FormData();
         postFormData.append('title', postData.title);
         postFormData.append('description', postData.description);
-        postFormData.append('photo', postData.photo);
+        if(postData.photo){postFormData.append('photo', postData.photo[0]);}
         postFormData.append('userId', user?.uId as string);
-        axios.post("http://localhost:3000/post/createPost", {
-            title: postData.title,
-            description: postData.description,
-            photo: postData.photo,
-            userId: user?.uId,
-        }).then((request: AxiosResponse) => {
-            console.log(request)
-            setUserPost([...userPost,{...request.data}])
-        }).catch((reject) => {
-            console.log(reject)
-        })
-        console.log(postData)
+           try {
+               const createdPostResponse :UserPost[]= await createPost(postFormData)
+               setUserPost([...userPost,...createdPostResponse])
+           }catch (error: any){
+               console.error(error.message)
+           }
     }
+    console.log(userPost)
     return (
         <>
             <Header />

@@ -11,18 +11,20 @@ interface props {
 
 const ShowPosts:React.FC<props> = ({userPost}) => {
     console.log(userPost)
+
     return (
         <div>
-            {userPost?.map((post,i) => {
+            {userPost && userPost.length>0 && userPost.map((post,i) => {
                 return(
                     <div key={i} className="w-full flex justify-center flex-col items-center mt-3 mb-3 pb-5">
                         <div className="w-2/4 border-b-2 border-hardBlue mt-3 mb-3"></div>
                         <div className="w-5/12 p-3 border-2 border-hardBlue">
                             <div className="w-full flex justify-start mb-6">
                                 <div className="flex flex-row">
-                                    <AccountCircleRoundedIcon className="!text-6xl" />
+                                    {/*<AccountCircleRoundedIcon className="!text-6xl" />*/}
+                                    <img src={post.user.picture} alt="" className="w-10 h-10 rounded-full" />
                                     <div className="ml-3">
-                                        <p>Jhone doe</p>
+                                        <p>{post.user.userName}</p>
                                         <p>Posted At: {DataEditor(post.createdAt)}</p>
                                     </div>
                                 </div>
@@ -73,7 +75,7 @@ const ShowPosts:React.FC<props> = ({userPost}) => {
                     </div>
                 )
             })}
-            {userPost?.length === 0 ? <div className={"w-full flex justify-center text-2xl"}><h1>You have no posts</h1></div> : ""}
+            {!userPost &&  <div className={"w-full flex justify-center text-2xl"}><h1>You have no posts</h1></div> }
         </div>
     );
 };

@@ -11,13 +11,19 @@ export type Post = {
     photo: any //TODO FIX this SHit
     userId: string | undefined
 }
-
+export type UserFromDB = {
+    uId: string
+    userName: string
+    picture: string
+}
 export type UserPost = {
     id: number
     title: string
     description: string
     photo: string
+    user: UserFromDB
     createdAt: string
     updatedAt: string
     userId: number
 }
+
