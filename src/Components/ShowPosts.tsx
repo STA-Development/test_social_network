@@ -10,8 +10,6 @@ interface props {
 }
 
 const ShowPosts:React.FC<props> = ({userPost}) => {
-    console.log(userPost)
-
     return (
         <div>
             {userPost && userPost.length>0 && userPost.map((post,i) => {

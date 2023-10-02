@@ -21,3 +21,15 @@ export const createPost = async (postFormData: FormData):Promise<UserPost[]> => 
     })
     return data
 }
+
+export const addNextTenPosts = async (length:number): Promise<UserPost[]> => {
+    console.log('...gettingNext')
+    const {data} = await axios.get(`http://localhost:3000/post/getAllPosts/${length}`)
+    return data
+}
+
+export const addUserNextTenPosts = async (length:number,user: User | null):Promise<UserPost[]> => {
+    console.log('...gettingNext for User')
+    const {data} = await axios.get(`http://localhost:3000/post/getUserAllPosts/${length}/${user?.uId}`)
+    return data
+}

@@ -3,11 +3,12 @@ import Header from "../Components/Header";
 import {Post, User, UserPost} from "../types/typeSection";
 import {useAppSelector} from "../Hooks/hook";
 import ShowPosts from "../Components/ShowPosts";
-import {createPost, getCurrentUserPosts} from "../Service/User/RequestsForUsers";
+import {addNextTenPosts, addUserNextTenPosts, createPost, getCurrentUserPosts} from "../Service/User/RequestsForUsers";
 import {Oval} from "react-loader-spinner";
 import {postSchema} from '../validator/';
-import {ToastNotify} from "../Helpers";
+import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import { ToastContainer } from 'react-toastify';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const PostControll = () => {
     const user:User | null =  useAppSelector(state => state.auth.auth)
@@ -22,7 +23,6 @@ const PostControll = () => {
         (async () => {
             if (user?.uId !== '') {
                 const Posts = await getCurrentUserPosts(user)
-                console.log(Posts)
                 setUserPost([...Posts])
             }
         })()
@@ -31,7 +31,6 @@ const PostControll = () => {
         e.preventDefault()
         const validationResult = await postSchema.isValid(postData)
         if(validationResult){
-            console.log('as')
             const postFormData: FormData = new FormData();
             postFormData.append('title', postData.title);
             postFormData.append('description', postData.description);
@@ -40,16 +39,24 @@ const PostControll = () => {
             try {
                 const createdPostResponse :UserPost[]= await createPost(postFormData)
                 setUserPost([...userPost,...createdPostResponse])
+                ToastNotifySuccess()
             }catch (error: any){
                 console.error(error.message)
-                ToastNotify(error.message)
+                ToastNotifyError(error.message)
             }
         }
         else{
-            ToastNotify()
+            ToastNotifyError()
         }
     }
-    console.log(userPost)
+    const addMorePosts = async ():Promise<void> => {
+        const getMore:UserPost[] = await addUserNextTenPosts(userPost.length,user)
+        console.log(getMore)
+        if(getMore.length === 0 ){
+            ToastNotifyError('you have no more posts  😕')
+        }
+        setUserPost([...userPost, ...getMore])
+    }
     return (
         <>
             <Header />
@@ -103,6 +110,13 @@ const PostControll = () => {
                 </div>
             </div>
             <ShowPosts userPost={userPost} />
+            <div className='w-full flex justify-center items-center p-3'>
+                <nav >
+                    <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
+                        <ArrowDownwardIcon />
+                    </button>
+                </nav>
+            </div>
             {userPost.length === 0 &&
                 <div className='w-full flex justify-center items-center'>
                     <Oval
@@ -116,7 +130,6 @@ const PostControll = () => {
                         secondaryColor="#1f66ff"
                         strokeWidth={2}
                         strokeWidthSecondary={2}
-
                     />
                 </div>
             }
