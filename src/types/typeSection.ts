@@ -26,4 +26,3 @@ export type UserPost = {
     updatedAt: string
     userId: number
 }
-

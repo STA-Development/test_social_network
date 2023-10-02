@@ -1,10 +1,13 @@
 import React, {FormEvent, useEffect, useState} from "react"
 import Header from "../Components/Header";
 import {Post, User, UserPost} from "../types/typeSection";
-import axios, {AxiosError, AxiosResponse} from "axios";
 import {useAppSelector} from "../Hooks/hook";
 import ShowPosts from "../Components/ShowPosts";
 import {createPost, getCurrentUserPosts} from "../Service/User/RequestsForUsers";
+import {Oval} from "react-loader-spinner";
+import {postSchema} from '../validator/';
+import {ToastNotify} from "../Helpers";
+import { ToastContainer } from 'react-toastify';
 
 const PostControll = () => {
     const user:User | null =  useAppSelector(state => state.auth.auth)
@@ -26,17 +29,25 @@ const PostControll = () => {
     }, [user])
     const handlePostSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault()
-        const postFormData: FormData = new FormData();
-        postFormData.append('title', postData.title);
-        postFormData.append('description', postData.description);
-        if(postData.photo){postFormData.append('photo', postData.photo[0]);}
-        postFormData.append('userId', user?.uId as string);
-           try {
-               const createdPostResponse :UserPost[]= await createPost(postFormData)
-               setUserPost([...userPost,...createdPostResponse])
-           }catch (error: any){
-               console.error(error.message)
-           }
+        const validationResult = await postSchema.isValid(postData)
+        if(validationResult){
+            console.log('as')
+            const postFormData: FormData = new FormData();
+            postFormData.append('title', postData.title);
+            postFormData.append('description', postData.description);
+            if(postData.photo){postFormData.append('photo', postData.photo[0]);}
+            postFormData.append('userId', user?.uId as string);
+            try {
+                const createdPostResponse :UserPost[]= await createPost(postFormData)
+                setUserPost([...userPost,...createdPostResponse])
+            }catch (error: any){
+                console.error(error.message)
+                ToastNotify(error.message)
+            }
+        }
+        else{
+            ToastNotify()
+        }
     }
     console.log(userPost)
     return (
@@ -92,6 +103,24 @@ const PostControll = () => {
                 </div>
             </div>
             <ShowPosts userPost={userPost} />
+            {userPost.length === 0 &&
+                <div className='w-full flex justify-center items-center'>
+                    <Oval
+                        height={160}
+                        width={160}
+                        color="#1f66ff"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                        ariaLabel='oval-loading'
+                        secondaryColor="#1f66ff"
+                        strokeWidth={2}
+                        strokeWidthSecondary={2}
+
+                    />
+                </div>
+            }
+            <ToastContainer />
         </>
     )
 }

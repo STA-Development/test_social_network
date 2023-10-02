@@ -8,7 +8,7 @@ import ErrorPage from "./Pages/Error";
 import Feaders from './Pages/Feaders';
 import SignIn from "./Pages/SignIn";
 import PostControll from "./Pages/PostControll";
-import SignUp from "./Pages/SignUp";
+// import SignUp from "./Pages/SignUp";
 import {useAppDispatch, useAppSelector} from "./Hooks/hook";
 import Profile from "./Pages/Profile";
 import auth from "./Firebase";
@@ -34,10 +34,10 @@ const router = createBrowserRouter([
     path: "signIn",
     element: <SignIn />,
   },
-  {
-    path: "signUp",
-    element: <SignUp />
-  },
+  // {
+  //   path: "signUp",
+  //   element: <SignUp />
+  // },
   {
     path: "posts",
     element: <PrivateRoutes elements={<PostControll />}/>

@@ -7,13 +7,13 @@ import {useNavigate} from "react-router-dom";
 import {userAuth,userLogOut} from "../Redux/Store/auth/authSlice";
 import ProfileSection from "../Components/ProfileSection";
 import {User} from "../types/typeSection";
+import {Oval} from "react-loader-spinner";
 
 
 const Profile = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const user: User | null =  useAppSelector(state => state.auth.auth)
-    // console.log(user)
     const handleSignOut = async(): Promise<void> => {
         try {
             const out = await logOut()
