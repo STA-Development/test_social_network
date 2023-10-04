@@ -12,7 +12,7 @@ import PostControll from "./Pages/PostControll";
 import {useAppDispatch, useAppSelector} from "./Hooks/hook";
 import Profile from "./Pages/Profile";
 import auth from "./Firebase";
-import {userAuth, userLogOut} from "./Redux/Store/auth/authSlice";
+import {userAuth, userLogOut, userToken} from "./Redux/Store/auth/authSlice";
 import PrivateRoutes from "./Components/PrivateRoutes";
 import axios from "axios";
 
@@ -57,6 +57,7 @@ function App() {
       if(authUser){
         authUser.getIdTokenResult().then(result=> {
           const token = result.token
+          dispatch(userToken(token))
           const request: Promise<void> = axios.get("http://localhost:3000/userAuth/verifyUser",{
             headers:{
               Authorization: `Bearer ${token}`

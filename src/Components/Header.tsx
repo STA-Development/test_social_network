@@ -4,9 +4,26 @@ import {
     Bars3Icon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../Hooks/hook";
+import {User} from "../types/typeSection";
+import {logOut} from "../Service/firebase/userAuth";
+import {userLogOut} from "../Redux/Store/auth/authSlice";
 export default function Header() {
+    const user:User | null = useAppSelector(state => state.auth.auth)
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
+    const handleSignOut = async(): Promise<void> => {
+        try {
+            const out = await logOut()
+            dispatch(userLogOut())
+            console.log("Log out")
+            navigate("/")
+        }catch(e:any){
+            console.log(e.message)
+        }
+    }
     return (
         <header className="bg-white border-b-2 border-hardBlue">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -40,9 +57,17 @@ export default function Header() {
                     </Link>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <Link to="/signIn" className="text-sm font-semibold leading-6 text-gray-900">
-                        Sign in <span aria-hidden="true">&rarr;</span>
+                    <Link to="/signIn" className="text-sm font-semibold leading-6 text-gray-900 mr-3">
+                        Sign in
                     </Link>
+                    {user &&
+                        <>
+                            <span>/</span>
+                            <button onClick={() => handleSignOut()} className="text-sm font-semibold leading-6 text-red ml-3">
+                                Sign Out
+                            </button>
+                        </>
+                    }
                 </div>
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>

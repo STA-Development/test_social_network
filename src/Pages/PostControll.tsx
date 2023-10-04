@@ -12,6 +12,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const PostControll = () => {
     const user:User | null =  useAppSelector(state => state.auth.auth)
+    const token = useAppSelector(state => state.auth.token)
     const [postData, setPostData] = useState<Post>({
         title: '',
         description: '',
@@ -22,7 +23,7 @@ const PostControll = () => {
     useEffect(()=> {
         (async () => {
             if (user?.uId !== '') {
-                const Posts = await getCurrentUserPosts(user)
+                const Posts = await getCurrentUserPosts(user,token)
                 setUserPost([...Posts])
             }
         })()
@@ -37,7 +38,7 @@ const PostControll = () => {
             if(postData.photo){postFormData.append('photo', postData.photo[0]);}
             postFormData.append('userId', user?.uId as string);
             try {
-                const createdPostResponse :UserPost[]= await createPost(postFormData)
+                const createdPostResponse :UserPost[]= await createPost(postFormData,token)
                 setUserPost([...userPost,...createdPostResponse])
                 ToastNotifySuccess()
             }catch (error: any){
@@ -50,7 +51,7 @@ const PostControll = () => {
         }
     }
     const addMorePosts = async ():Promise<void> => {
-        const getMore:UserPost[] = await addUserNextTenPosts(userPost.length,user)
+        const getMore:UserPost[] = await addUserNextTenPosts(userPost.length, token)
         console.log(getMore)
         if(getMore.length === 0 ){
             ToastNotifyError('you have no more posts  😕')
@@ -109,7 +110,7 @@ const PostControll = () => {
                     </form>
                 </div>
             </div>
-            <ShowPosts userPost={userPost} />
+            <ShowPosts edit={true} userPost={userPost} />
             <div className='w-full flex justify-center items-center p-3'>
                 <nav >
                     <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">

@@ -8,9 +8,10 @@ export interface User {
 export type Post = {
     title: string
     description: string
-    photo: any //TODO FIX this SHit
-    userId: string | undefined
+    photo: any //TODO FIX this SHit (try binary data)
+    userId?: string | undefined
 }
+
 export type UserFromDB = {
     uId: string
     userName: string
@@ -26,3 +27,4 @@ export type UserPost = {
     updatedAt: string
     userId: number
 }
+

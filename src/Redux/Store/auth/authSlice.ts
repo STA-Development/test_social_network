@@ -3,6 +3,7 @@ import {User} from "../../../types/typeSection";
 
 interface AuthUser {
     auth: User | null
+    token: string
 }
 
 const initialState: AuthUser = {
@@ -12,6 +13,7 @@ const initialState: AuthUser = {
         email: '',
         picture: undefined
     },
+    token: ''
 }
 
 
@@ -24,12 +26,15 @@ export const authSlice = createSlice({
         },
         userLogOut: state => {
             state.auth = null
+        },
+        userToken: (state,{payload}:PayloadAction<string>):void => {
+            state.token = payload
         }
     }
 
 })
 
 
-export const {userAuth,userLogOut} = authSlice.actions
+export const {userAuth,userLogOut,userToken} = authSlice.actions
 
 export default authSlice.reducer

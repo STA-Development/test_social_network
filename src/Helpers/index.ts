@@ -32,3 +32,16 @@ export const ToastNotifySuccess = (message: string = '🤔 Operation successfull
         theme: "light",
     });
 }
+
+export const ToastNotifyEdit = (message: string = 'Your edit operation is done successfully'):void => {
+    toast.warning(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    })
+}
