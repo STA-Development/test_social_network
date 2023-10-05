@@ -1,22 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {User, UserPost} from "../types/typeSection";
+import { UserPost} from "../types/typeSection";
 import CommentSection from "./CommentSection";
 import {DataEditor} from "../Helpers";
 import PostEdit from "./PostEdit";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {deleteUserPost} from "../Service/User/RequestsForUsers";
-import {useNavigate} from "react-router-dom";
 import {deleteImage} from "../Service/firebase/fileStorage";
 import {useAppSelector} from "../Hooks/hook";
 
 interface props {
-    userPost?: UserPost[]
+    userPost?: UserPost[] | undefined
     edit?: boolean
+    setUserPost?: Function
 }
 
-const ShowPosts:React.FC<props> = ({userPost, edit}) => {
-    const token = useAppSelector(state => state.auth.token)
+const ShowPosts:React.FC<props> = ({userPost, edit, setUserPost}) => {
+    const token: string = useAppSelector(state => state.auth.token)
+    const [wholePost , setWholePost] = useState<UserPost>({} as UserPost)
     const [showUserPosts, setShowUserPosts] = useState<UserPost[]>([])
     useEffect(() => {
         if(userPost){
@@ -25,29 +26,34 @@ const ShowPosts:React.FC<props> = ({userPost, edit}) => {
     },[userPost])
     const [open, setOpen] = React.useState(false);
     const [currentPostId, setCurrentPostId] = React.useState<number>(0)
-    const handleClickOpen = (postId: number) => {
+    const handleClickOpen = (postId: number, post:UserPost) => {
         setOpen(true);
         setCurrentPostId(postId);
+        setWholePost({...post})
     };
-    const deletePost = async (postId:number, userId: number, photo: string):Promise<void> =>{
-            const restOfPosts =  await deleteUserPost(postId, token)
+    const deletePost = async (postId:number, photo: string):Promise<void> =>{
+            const restOfPosts:UserPost[] =  await deleteUserPost(postId, token)
             if(photo){
                 deleteImage(photo.split('/')[7].split('?')[0])
             }
-            setShowUserPosts([...restOfPosts])
+                if(setUserPost){
+                    setUserPost([...restOfPosts])
+                }
+                setShowUserPosts([...restOfPosts])
     }
     const handleClose = () => {
         setOpen(false);
     };
+    console.log(showUserPosts)
     return (
         <div>
-            <PostEdit postId = {currentPostId} open={open} handleClose={handleClose} />
+            <PostEdit postId = {currentPostId} open={open} wholePost={wholePost} handleClose={handleClose} />
             {showUserPosts.length>0 && showUserPosts.map((post,i) => {
                 return(
                     <div key={i} className="w-full flex justify-center flex-col items-center mt-3 mb-3 pb-5">
                         <div className="w-2/4 border-b-2 border-hardBlue mt-3 mb-3"></div>
-                        <div className="w-5/12 p-3 border-2 border-hardBlue">
-                            <div className="w-full flex justify-between mb-6">
+                        <div className="w-5/12 h-128 p-3 border-2 border-hardBlue">
+                            <div className="w-full flex justify-between flex-wrap mb-6">
                                 <div className="flex flex-row">
                                     <img src={post.user.picture} alt="" className="w-10 h-10 rounded-full" />
                                     <div className="ml-3">
@@ -56,11 +62,11 @@ const ShowPosts:React.FC<props> = ({userPost, edit}) => {
                                     </div>
                                 </div>
                                 {edit &&
-                                    <div>
-                                        <button onClick={() => handleClickOpen(post.id)} className="w-32 p-1 transition duration-300 ease-in-out hover:bg-soft-yellow text-yellow font-semibold border border-blue-500 hover:border-transparent rounded">
+                                    <div className='flex justify-center items-center flex-wrap gap-2'>
+                                        <button onClick={() => handleClickOpen(post.id,post)} className="w-32 p-1 transition duration-300 ease-in-out hover:bg-soft-yellow text-yellow font-semibold border border-blue-500 hover:border-transparent rounded">
                                             <EditIcon />
                                         </button>
-                                        <button onClick={() => deletePost(post.id,post.userId, post.photo)} className="w-32 p-1 ml-3 transition duration-300 ease-in-out hover:bg-soft-red text-red font-semibold border border-red-500 hover:border-transparent rounded">
+                                        <button onClick={() => deletePost(post.id, post.photo)} className="w-32 p-1  transition duration-300 ease-in-out hover:bg-soft-red text-red font-semibold border border-red-500 hover:border-transparent rounded">
                                             <DeleteIcon />
                                         </button>
                                     </div>
@@ -104,7 +110,7 @@ const ShowPosts:React.FC<props> = ({userPost, edit}) => {
                                     />
                                 </div>
                             </div>
-                            <CommentSection />
+                            <CommentSection postId = {post.id}  />
                         </div>
                     </div>
                 )

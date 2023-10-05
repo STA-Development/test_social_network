@@ -5,3 +5,8 @@ export const postSchema = yup.object().shape({
     description: yup.string().required().max(500),
     photo: yup.mixed(),
 })
+
+
+export const commentSchema = yup.object().shape({
+    comment: yup.string().required().max(200)
+})

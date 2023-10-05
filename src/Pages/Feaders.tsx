@@ -13,9 +13,9 @@ import {ToastContainer} from "react-toastify";
 
 const Feaders = () => {
     const [allPosts, setAllPosts] = useState<UserPost[]>([]);
-    useEffect(() => {
-        (async () => {
-            const getPosts = await getAllPosts();
+    useEffect(():void => {
+        (async ():Promise<void> => {
+            const getPosts:UserPost[] = await getAllPosts();
             console.log(getPosts)
             setAllPosts([...getPosts])
         })()
@@ -34,9 +34,11 @@ const Feaders = () => {
             <ShowPosts  userPost={allPosts}/>
             <div className='w-full flex justify-center items-center p-3'>
                 <nav >
-                    <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
-                        <ArrowDownwardIcon />
-                    </button>
+                    {allPosts  &&
+                        <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
+                            <ArrowDownwardIcon />
+                        </button>
+                    }
                 </nav>
             </div>
             {allPosts.length === 0 &&

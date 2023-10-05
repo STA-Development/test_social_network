@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
@@ -12,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+import {CommentFromDB} from "../types/typeSection";
+import {Avatar} from "@mui/material";
 
 //TODO Make user comment be at first
 
@@ -27,10 +32,11 @@ const Transition = React.forwardRef(function Transition(
 
 interface Props {
     open: boolean
-    handleClickOpen: Function
     handleClose: Function
+    spinIsActive: boolean
+    postComments: CommentFromDB[]
 }
-const CommentDialogSection:React.FC<Props> = ({open,handleClickOpen,handleClose}) => {
+const CommentDialogSection:React.FC<Props> = ({open,handleClose,spinIsActive, postComments}) => {
 
     return (
         <div>
@@ -56,16 +62,26 @@ const CommentDialogSection:React.FC<Props> = ({open,handleClickOpen,handleClose}
                     </Toolbar>
                 </AppBar>
                 <List>
-                    <ListItem>
-                        <ListItemText primary="Phone ringtone" secondary="Titania" />
-                    </ListItem>
+                    {spinIsActive &&
+                        <Box sx={{ width: '100%' }}>
+                            <LinearProgress />
+                        </Box>
+                    }
                     <Divider />
-                    <ListItem>
-                        <ListItemText
-                            primary="Default notification ringtone"
-                            secondary="Tethys"
-                        />
-                    </ListItem>
+                    {postComments.map((e,i) => {
+                        return (
+                            <div key={e.id}>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar src={e.user.picture} />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={e.user.userName} secondary={e.comment} />
+                                </ListItem>
+                                <Divider />
+                            </div>
+                        )
+                    })}
+
                 </List>
             </Dialog>
         </div>

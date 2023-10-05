@@ -11,14 +11,17 @@ import {postSchema} from "../validator";
 import { editUserPost} from "../Service/User/RequestsForUsers";
 import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {deleteImage} from "../Service/firebase/fileStorage";
-import {useAppSelector} from "../Hooks/hook";
+import {useAppDispatch, useAppSelector} from "../Hooks/hook";
+import {editPosts} from "../Redux/Store/posts/postsSlice";
 
 interface Props {
     open: boolean
     handleClose: Function
     postId: number
+    wholePost: UserPost
 }
-const PostEdit:React.FC<Props> = ({open, handleClose, postId}) => {
+const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
+    const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.auth.token)
     const [postData, setPostData] = useState<Post>({
         title: '',
@@ -34,7 +37,9 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId}) => {
             editFormData.append('description', postData.description);
             if(postData.photo){editFormData.append('photo', postData.photo[0]);}
             try {
-                const editedPostResponse:[UserPost, string] = await editUserPost(postId,editFormData, token)
+                const editedPostResponse:[UserPost[], string] = await editUserPost(postId,editFormData, token)
+                const allPosts:UserPost[] = editedPostResponse[0]
+                dispatch(editPosts(allPosts))
                 console.log(editedPostResponse)
                 if(editedPostResponse[1]){
                     deleteImage(editedPostResponse[1].split('/')[7].split('?')[0])
@@ -61,6 +66,7 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId}) => {
                         <div className="flex flex-col">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="title">Insert your post title:</label>
                             <input
+                                value={wholePost? wholePost.title : ''}
                                 onChange={(e) => setPostData({...postData,title:e.target.value})}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
@@ -71,6 +77,7 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId}) => {
                         <div className="flex flex-col mt-3">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="descript">Insert your post description:</label>
                             <input
+                                value={wholePost? wholePost.description : ''}
                                 onChange={(e) => setPostData({...postData,description:e.target.value})}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
@@ -91,7 +98,7 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId}) => {
                         <div className="w-full mt-3">
                             <button
                                 type="submit"
-                                // className = "bg-hardBlue hover:bg-blue text-white-dark font-bold py-2 px-4 border-b-4 border-hardBlue hover:border-hardBlue rounded"
+                                onClick={() => handleClose()}
                                 className = "w-full bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in"
                             >
                                 Add post

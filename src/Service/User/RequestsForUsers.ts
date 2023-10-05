@@ -40,7 +40,7 @@ export const addUserNextTenPosts = async (length:number, token: string):Promise<
     return data
 }
 
-export const editUserPost = async (postId:number, editFormData:FormData, token: string):Promise<[UserPost, string]> => {
+export const editUserPost = async (postId:number, editFormData:FormData, token: string):Promise<[UserPost[], string]> => {
     console.log('...editing')
     console.log(editFormData.get('title'))
     const {data} = await axios.patch(`http://localhost:3000/post/edit/${postId}`,editFormData,{
@@ -59,5 +59,22 @@ export const deleteUserPost = async (postId:number, token: string):Promise<UserP
             Authorization: `Bearer ${token}`
         }
     })
+    return data
+}
+
+
+export const addComment = async (comment:string, postId:number,token:string) => {
+    console.log('...adding Comment')
+    const {data} = await axios.post(`http://localhost:3000/comment/addComment`, {comment,postId},{
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    return data
+}
+
+export const getComments = async(postId:number,token:string) => {
+    console.log('...getting Comments')
+    const {data} = await axios.get(`http://localhost:3000/comment/allComments/${postId}`)
     return data
 }

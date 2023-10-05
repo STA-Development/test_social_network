@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from "react"
 import Header from "../Components/Header";
 import {Post, User, UserPost} from "../types/typeSection";
-import {useAppSelector} from "../Hooks/hook";
+import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import ShowPosts from "../Components/ShowPosts";
 import {addNextTenPosts, addUserNextTenPosts, createPost, getCurrentUserPosts} from "../Service/User/RequestsForUsers";
 import {Oval} from "react-loader-spinner";
@@ -9,10 +9,13 @@ import {postSchema} from '../validator/';
 import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import { ToastContainer } from 'react-toastify';
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import {editPosts} from "../Redux/Store/posts/postsSlice";
 
 const PostControll = () => {
+    const editedPosts:UserPost[] | null = useAppSelector(state => state.posts.posts)
+    const dispatch = useAppDispatch()
     const user:User | null =  useAppSelector(state => state.auth.auth)
-    const token = useAppSelector(state => state.auth.token)
+    const token:string = useAppSelector(state => state.auth.token)
     const [postData, setPostData] = useState<Post>({
         title: '',
         description: '',
@@ -20,10 +23,16 @@ const PostControll = () => {
         userId: user?.uId,
     })
     const [userPost, setUserPost] = useState<UserPost[]>([]);
-    useEffect(()=> {
-        (async () => {
+    useEffect(() => {
+        if(editedPosts){
+            setUserPost([...editedPosts])
+            dispatch(editPosts(null))
+        }
+    }, [editedPosts]);
+    useEffect(():void=> {
+        (async ():Promise<void> => {
             if (user?.uId !== '') {
-                const Posts = await getCurrentUserPosts(user,token)
+                const Posts:UserPost[] = await getCurrentUserPosts(user,token)
                 setUserPost([...Posts])
             }
         })()
@@ -110,7 +119,7 @@ const PostControll = () => {
                     </form>
                 </div>
             </div>
-            <ShowPosts edit={true} userPost={userPost} />
+            <ShowPosts edit={true} userPost={userPost} setUserPost={setUserPost} />
             <div className='w-full flex justify-center items-center p-3'>
                 <nav >
                     <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
