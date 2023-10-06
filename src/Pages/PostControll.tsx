@@ -61,7 +61,7 @@ const PostControll = () => {
     }
     const addMorePosts = async ():Promise<void> => {
         const getMore:UserPost[] = await addUserNextTenPosts(userPost.length, token)
-        console.log(getMore)
+        // console.log(getMore)
         if(getMore.length === 0 ){
             ToastNotifyError('you have no more posts  😕')
         }

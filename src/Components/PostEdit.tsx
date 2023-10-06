@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -28,9 +28,17 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
         description: '',
         photo:{},
     })
-    const editPost = async (e:FormEvent) => {
+    useEffect(() => {
+        if(wholePost.title && wholePost.description){
+            setPostData({...postData,title:wholePost.title,description:wholePost.description})
+            console.log(3213213);
+        }
+        else
+            console.log('not working')
+    }, [wholePost]);
+    const editPost = async (e:FormEvent):Promise<void> => {
         e.preventDefault()
-        const validationResult = await postSchema.isValid(postData)
+        const validationResult: boolean = await postSchema.isValid(postData)
         if(validationResult){
             const editFormData: FormData = new FormData();
             editFormData.append('title', postData.title);
@@ -57,7 +65,7 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
     return (
         <div className='w-full'>
             <Dialog open={open} onClose={() => handleClose()}>
-                <DialogTitle>Subscribe</DialogTitle>
+                <DialogTitle>EDIT</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         YOU CAN EDIT YOUR POST IF YOU WANT 🙃:
@@ -66,8 +74,8 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
                         <div className="flex flex-col">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="title">Insert your post title:</label>
                             <input
-                                value={wholePost? wholePost.title : ''}
-                                onChange={(e) => setPostData({...postData,title:e.target.value})}
+                                value={postData.title}
+                                onChange={(e) => setPostData({...postData, title: e.target.value})}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
                                 placeholder="Insert your post title"
@@ -77,7 +85,7 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
                         <div className="flex flex-col mt-3">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="descript">Insert your post description:</label>
                             <input
-                                value={wholePost? wholePost.description : ''}
+                                defaultValue={postData.description}
                                 onChange={(e) => setPostData({...postData,description:e.target.value})}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
@@ -99,9 +107,9 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
                             <button
                                 type="submit"
                                 onClick={() => handleClose()}
-                                className = "w-full bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in"
+                                className = "w-full bg-yellow hover:bg-soft-yellow border-2 border-yellow text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in"
                             >
-                                Add post
+                                Edit post
                             </button>
                         </div>
                     </form>
