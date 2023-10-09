@@ -14,7 +14,6 @@ import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {deleteImage} from "../Service/firebase/fileStorage";
 import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {editPosts} from "../Redux/Store/posts/postsSlice";
-import {useNavigate} from "react-router-dom";
 
 interface Props {
     open: boolean
@@ -24,7 +23,6 @@ interface Props {
 }
 const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
     const [showNotDelete, setShowNotDelete] = useState<boolean>(false)
     const [notDelete, setNotDelete] = useState<boolean>(false)
 

@@ -45,7 +45,7 @@ export default function Header() {
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <Link to="/feaders" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
-                                Feader
+                        Feader
                     </Link>
 
                     <Link to="/posts" className="text-sm font-semibold leading-6 text-gray-900">
@@ -121,6 +121,14 @@ export default function Header() {
                                 >
                                     Sing In
                                 </Link>
+                                {user &&
+                                    <>
+                                        <span>/</span>
+                                        <button onClick={() => handleSignOut()} className="text-sm font-semibold leading-6 text-red ml-3">
+                                            Sign Out
+                                        </button>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

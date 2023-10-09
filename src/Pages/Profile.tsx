@@ -28,7 +28,7 @@ const Profile = () => {
         <>
             <Header/>
             <div className="w-full h-screen flex justify-center items-center  p-3">
-                <div className="w-6/12 border border-hardBlue container p-3">
+                <div className="w-96 border border-hardBlue container p-3">
                     {user ? <ProfileSection user={user}/> : ""}
                     <button
                         onClick={() => handleSignOut()}

@@ -5,7 +5,8 @@ import {addComment, getComments} from "../Service/User/RequestsForUsers";
 import {useAppSelector} from "../Hooks/hook";
 import {commentSchema} from "../validator";
 import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
-import {CommentFromDB} from "../types/typeSection";
+import {CommentFromDB, User} from "../types/typeSection";
+import firebase from "firebase/compat";
 
 //TODO make that if user have commented it's avatar will be at first in commented users section and be highlighted
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const CommentSection: React.FC<Props> = ({postId}) => {
+    const user:User|null = useAppSelector(state => state.auth.auth)
     const [open, setOpen] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('')
     const token: string = useAppSelector(state => state.auth.token);
@@ -29,13 +31,19 @@ const CommentSection: React.FC<Props> = ({postId}) => {
     };
     const handleCommentAdding = async (e: FormEvent): Promise<void> => {
         e.preventDefault()
-        const validationRules: boolean = await commentSchema.isValid({comment})
-        console.log(validationRules)
-        if (validationRules) {
-            const commentAdded = await addComment(comment, postId, token)
-            ToastNotifySuccess('Your comment has been added check in show Comments')
-        } else {
-            ToastNotifyError('Something went wrong (remember text size must be lower then 200)🤔')
+        if(user){
+            const validationRules: boolean = await commentSchema.isValid({comment})
+            console.log(validationRules)
+            if (validationRules) {
+                const commentAdded = await addComment(comment, postId, token)
+                setComment('')
+                ToastNotifySuccess('Your comment has been added check in show Comments')
+            } else {
+                ToastNotifyError('Something went wrong (remember text size must be lower then 200)🤔')
+            }
+        }
+        else{
+            ToastNotifyError('It seems you are not singed In🤔')
         }
     }
 
@@ -57,6 +65,7 @@ const CommentSection: React.FC<Props> = ({postId}) => {
                 <div>
                     <textarea
                         // maxLength="210" xModel="maximum" xRef="maximum"
+                        value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         id="message" rows={4}
                         className="block p-2.5 w-full text-sm text-gray-dark bg-gray-50 rounded-lg border-hardBlue resize-none"

@@ -65,7 +65,8 @@ const PostControll = () => {
                 setFilePreview('')
             }catch (error: any){
                 console.error(error.message)
-                ToastNotifyError(error.message)
+                setFilePreview('')
+                ToastNotifyError('Something went wrong check if all inputes are filled and image type is correct(jpg/png) ')
             }
         }
         else{
@@ -144,13 +145,15 @@ const PostControll = () => {
                     <h1 className=''>There is no posts right now</h1>
                 </div>
             }
-            <div className='w-full flex justify-center items-center p-3'>
-                <nav >
-                    <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
-                        <ArrowDownwardIcon />
-                    </button>
-                </nav>
-            </div>
+            {userPost.length !== 0 &&
+                <div className='w-full flex justify-center items-center p-3'>
+                    <nav >
+                        <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
+                            <ArrowDownwardIcon />
+                        </button>
+                    </nav>
+                </div>
+            }
             {!loading &&
                 <div className='w-full flex justify-center items-center'>
                     <Oval

@@ -38,6 +38,7 @@ const Feaders = () => {
                 </div>
             }
             <ShowPosts  userPost={allPosts}/>
+            {allPosts.length !== 0  &&
             <div className='w-full flex justify-center items-center p-3'>
                 <nav >
                     {allPosts  &&
@@ -47,6 +48,7 @@ const Feaders = () => {
                     }
                 </nav>
             </div>
+            }
             {!loading &&
                 <div className='w-full h-screen flex justify-center items-center'>
                     <Oval
