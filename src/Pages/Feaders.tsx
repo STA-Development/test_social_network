@@ -12,11 +12,12 @@ import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {ToastContainer} from "react-toastify";
 
 const Feaders = () => {
+    const [loading, setLoading] = useState<boolean>(false)
     const [allPosts, setAllPosts] = useState<UserPost[]>([]);
     useEffect(():void => {
         (async ():Promise<void> => {
             const getPosts:UserPost[] = await getAllPosts();
-            console.log(getPosts)
+            setLoading(true)
             setAllPosts([...getPosts])
         })()
     },[])
@@ -31,6 +32,11 @@ const Feaders = () => {
     return (
         <>
             <Header />
+            {allPosts.length === 0 && loading &&
+                <div className='w-full h-full text-center'>
+                    <h1 className=''>There is no posts right now</h1>
+                </div>
+            }
             <ShowPosts  userPost={allPosts}/>
             <div className='w-full flex justify-center items-center p-3'>
                 <nav >
@@ -41,7 +47,7 @@ const Feaders = () => {
                     }
                 </nav>
             </div>
-            {allPosts.length === 0 &&
+            {!loading &&
                 <div className='w-full h-screen flex justify-center items-center'>
                     <Oval
                         height={160}

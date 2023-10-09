@@ -12,6 +12,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {editPosts} from "../Redux/Store/posts/postsSlice";
 
 const PostControll = () => {
+    const [loading, setLoading] = useState<boolean>(false)
     const editedPosts:UserPost[] | null = useAppSelector(state => state.posts.posts)
     const dispatch = useAppDispatch()
     const user:User | null =  useAppSelector(state => state.auth.auth)
@@ -22,6 +23,7 @@ const PostControll = () => {
         photo:{},
         userId: user?.uId,
     })
+    const [filePreview, setFilePreview] = useState('')
     const [userPost, setUserPost] = useState<UserPost[]>([]);
     useEffect(() => {
         if(editedPosts){
@@ -33,10 +35,18 @@ const PostControll = () => {
         (async ():Promise<void> => {
             if (user?.uId !== '') {
                 const Posts:UserPost[] = await getCurrentUserPosts(user,token)
+                setLoading(true)
                 setUserPost([...Posts])
             }
         })()
     }, [user])
+    const handleFileUploading = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setPostData({...postData,photo:e.target})
+        if(e.target.files){
+            const url:string = URL.createObjectURL(e.target.files[0])
+            setFilePreview(url)
+        }
+    }
     const handlePostSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault()
         const validationResult = await postSchema.isValid(postData)
@@ -44,12 +54,15 @@ const PostControll = () => {
             const postFormData: FormData = new FormData();
             postFormData.append('title', postData.title);
             postFormData.append('description', postData.description);
-            if(postData.photo){postFormData.append('photo', postData.photo[0]);}
+            if(postData.photo.files && postData.photo.files[0]){postFormData.append('photo', postData.photo.files[0]);}
             postFormData.append('userId', user?.uId as string);
+            postData.photo.value = null
+            setPostData({...postData,title:'',description:'',photo:{}})
             try {
                 const createdPostResponse :UserPost[]= await createPost(postFormData,token)
                 setUserPost([...userPost,...createdPostResponse])
                 ToastNotifySuccess()
+                setFilePreview('')
             }catch (error: any){
                 console.error(error.message)
                 ToastNotifyError(error.message)
@@ -61,7 +74,6 @@ const PostControll = () => {
     }
     const addMorePosts = async ():Promise<void> => {
         const getMore:UserPost[] = await addUserNextTenPosts(userPost.length, token)
-        // console.log(getMore)
         if(getMore.length === 0 ){
             ToastNotifyError('you have no more posts  😕')
         }
@@ -80,6 +92,7 @@ const PostControll = () => {
                         <div className="flex flex-col">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="title">Insert your post title:</label>
                             <input
+                                value={postData.title}
                                 onChange={(e) => setPostData({...postData,title:e.target.value})}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                    type="text"
@@ -90,6 +103,7 @@ const PostControll = () => {
                         <div className="flex flex-col mt-3">
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="descript">Insert your post description:</label>
                             <input
+                                value={postData.description}
                                 onChange={(e) => setPostData({...postData,description:e.target.value})}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
@@ -101,12 +115,17 @@ const PostControll = () => {
                             <label className="block text-sm font-medium leading-6 text-gray-900 mb-2" htmlFor="image">Add image to your post:</label>
                             <input
                                 name={'file'}
-                                onChange={(e) => setPostData({...postData,photo:e.target.files})}
+                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleFileUploading(e)}
                                 className="block w-full bg-white p-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="file"
                                 id="image"
                             />
                         </div>
+                        {filePreview.length>0 &&
+                            <div className='w-full flex justify-center mt-3'>
+                                <img src={filePreview} alt="" className="w-72 h-56 "/>
+                            </div>
+                        }
                         <div className="w-full mt-3">
                             <button
                                 type="submit"
@@ -120,6 +139,11 @@ const PostControll = () => {
                 </div>
             </div>
             <ShowPosts edit={true} userPost={userPost} setUserPost={setUserPost} />
+            {userPost.length === 0 && loading  &&
+                <div className='w-full h-full text-center'>
+                    <h1 className=''>There is no posts right now</h1>
+                </div>
+            }
             <div className='w-full flex justify-center items-center p-3'>
                 <nav >
                     <button onClick={() => addMorePosts()} className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-hardBlue bg-white border border-hardBlue rounded-full hover:bg-soft-blue transition ease-in">
@@ -127,7 +151,7 @@ const PostControll = () => {
                     </button>
                 </nav>
             </div>
-            {userPost.length === 0 &&
+            {!loading &&
                 <div className='w-full flex justify-center items-center'>
                     <Oval
                         height={160}

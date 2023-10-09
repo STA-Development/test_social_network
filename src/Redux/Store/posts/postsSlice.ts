@@ -12,7 +12,6 @@ export const postsSlice = createSlice({
     initialState,
     reducers: {
         editPosts:(state,{payload}:PayloadAction<UserPost[] | null>) =>{
-            console.log(state.posts)
             state.posts = payload
         }
     }

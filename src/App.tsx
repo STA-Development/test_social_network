@@ -51,7 +51,6 @@ const router = createBrowserRouter([
 
 function App() {
   const user = useAppSelector(state => state.auth )
-  console.log(user)
   const dispatch = useAppDispatch()
   useEffect(()=> {
     auth.onAuthStateChanged(authUser => {

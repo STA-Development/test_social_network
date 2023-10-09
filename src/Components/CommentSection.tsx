@@ -44,15 +44,15 @@ const CommentSection: React.FC<Props> = ({postId}) => {
     };
     return (
         <section className="w-full flex justify-center flex-col p-3 mt-3">
-            <div className="w-full flex justify-between mb-3">
-                <div className="flex justify-center items-center -space-x-1 overflow-hidden">
-                    <img
-                        className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                        src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                    />
-                </div>
-            </div>
+            {/*<div className="w-full flex justify-between mb-3">*/}
+            {/*    <div className="flex justify-center items-center -space-x-1 overflow-hidden">*/}
+            {/*        <img*/}
+            {/*            className="inline-block h-6 w-6 rounded-full ring-2 ring-white"*/}
+            {/*            src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"*/}
+            {/*            alt=""*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</div>*/}
             <form onSubmit={(e) => handleCommentAdding(e)} className="w-full">
                 <div>
                     <textarea
