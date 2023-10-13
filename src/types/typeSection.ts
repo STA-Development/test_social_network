@@ -1,4 +1,3 @@
-import {number} from "yup";
 export interface User {
     uId: string
     name: string |  null

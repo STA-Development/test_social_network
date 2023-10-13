@@ -3,7 +3,7 @@ import React from "react";
 export const Trail: React.FC<{ open: boolean, children: React.ReactNode  }> = ({ open, children }) => {
     const items = React.Children.toArray(children)
     const trail = useTrail(items.length, {
-        config: { mass: 5, tension: 2000, friction: 200 },
+        config: { mass: 5, tension: 2000, friction: 300 },
         opacity: open ? 1 : 0,
         x: open ? 0 : 20,
         height: open ? 110 : 0,
@@ -12,7 +12,7 @@ export const Trail: React.FC<{ open: boolean, children: React.ReactNode  }> = ({
     return (
         <div>
             {trail.map(({ height, ...style }, index) => (
-                <a.div key={index}  className='text-9xl font-black' style={style}>
+                <a.div key={index}  className=' text-4xl sm:text-9xl  font-black' style={style}>
                     <a.div style={{ height }}>{items[index]}</a.div>
                 </a.div>
             ))}

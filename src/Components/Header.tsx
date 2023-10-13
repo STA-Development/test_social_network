@@ -75,9 +75,10 @@ export default function Header() {
                     }
                     {user &&
                         <>
-                            <button onClick={() => handleSignOut()} className="text-sm font-semibold text-bright-red underline p-1 leading-6 ml-3">
+                            <button onClick={() => handleSignOut()} className="text-sm font-semibold text-gray-light transition duration-200 ease-in hover:text-bright-red underline p-1 leading-6 ml-3">
                                 Sign Out
                             </button>
+                            <img src={user.picture? user.picture: ''} className='w-10 h-10 rounded-full' alt=""/>
                         </>
                     }
                 </div>

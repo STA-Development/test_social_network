@@ -14,9 +14,9 @@ function App() {
   useEffect(()=> {
     auth.onAuthStateChanged(authUser => {
       if(authUser){
-        console.log(authUser);
+        // console.log(authUser);
         authUser.getIdTokenResult().then(result=> {
-          console.log(result);
+          // console.log(result);
           const token:string = result.token
           dispatch(userToken(token))
           const request: Promise<void> = axios.get("http://localhost:3000/userAuth/verifyUser",{

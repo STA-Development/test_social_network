@@ -49,7 +49,6 @@ const PostControll = () => {
     const userPostsLength = async ():Promise<void> => {
         if(token){
             const userPostsLength:number = await allUserPostsLength(token)
-            console.log(userPostsLength)
             setPostsLength(userPostsLength)
         }
     }
