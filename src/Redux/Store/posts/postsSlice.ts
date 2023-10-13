@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Post, User, UserPost} from "../../../types/typeSection";
+import {UserPost} from "../../../types/typeSection";
 
 interface Posts {
     posts: UserPost[] | null

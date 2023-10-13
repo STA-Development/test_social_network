@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {User, UserPost} from "../../types/typeSection";
 
 export const getAllPosts = async ():Promise<UserPost[]> => {

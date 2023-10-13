@@ -2,14 +2,14 @@ import React, {useEffect} from 'react';
 import {
   RouterProvider,
 } from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "./Hooks/hook";
+import {useAppDispatch} from "./Hooks/hook";
 import auth from "./Firebase";
 import {userAuth, userLogOut, userToken} from "./Redux/Store/auth/authSlice";
 import axios from "axios";
 import {appRouter} from "./Routes/Router";
 
 
-function App() {
+function App():JSX.Element {
   const dispatch = useAppDispatch()
   useEffect(()=> {
     auth.onAuthStateChanged(authUser => {

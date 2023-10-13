@@ -1,15 +1,7 @@
 import React from 'react';
 import {User} from "../types/typeSection";
 
-type Data = {
-    email: string
-    name: string
-    picture: string
-    uId: string
-}
-
 const ProfileSection:React.FC <{ user: User }> = ({user}) => {
-    // console.log(user)
     return (
         <div className="w-full mb-3">
             <section className="w-80 h-96 mx-auto bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg">

@@ -1,6 +1,5 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -9,12 +8,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Post, UserPost} from "../types/typeSection";
 import {postSchema} from "../validator";
-import {allUserPostsLength, editUserPost} from "../Service/User/RequestsForUsers";
-import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
+import {editUserPost} from "../Service/User/RequestsForUsers";
+import {ToastNotifyEdit, ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {deleteImage} from "../Service/firebase/fileStorage";
 import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {editPosts} from "../Redux/Store/posts/postsSlice";
-import {bool} from "yup";
 
 interface Props {
     open: boolean
@@ -30,7 +28,6 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost,setLoadin
     const [notDelete, setNotDelete] = useState<boolean>(false)
     const token = useAppSelector(state => state.auth.token)
     const [filePreview, setFilePreview] = useState('')
-    // const [postsLength, setPostsLength] = useState<number>(0)
     const [postData, setPostData] = useState<Post>({
         title: '',
         description: '',

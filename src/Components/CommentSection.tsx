@@ -1,15 +1,12 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useState} from "react";
 import CommentDialogSection from "./CommentDialogSection";
-import commentDialogSection from "./CommentDialogSection";
 import {addComment, getComments} from "../Service/User/RequestsForUsers";
 import {useAppSelector} from "../Hooks/hook";
 import {commentSchema} from "../validator";
 import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {CommentFromDB, User} from "../types/typeSection";
-import firebase from "firebase/compat";
 import CoreButton from "./common/CoreButton";
 
-//TODO make that if user have commented it's avatar will be at first in commented users section and be highlighted
 interface Props {
     postId: number
 }
@@ -57,15 +54,6 @@ const CommentSection: React.FC<Props> = ({postId}) => {
 
     return (
         <section className="w-full flex justify-center flex-col p-3 mt-3">
-            {/*<div className="w-full flex justify-between mb-3">*/}
-            {/*    <div className="flex justify-center items-center -space-x-1 overflow-hidden">*/}
-            {/*        <img*/}
-            {/*            className="inline-block h-6 w-6 rounded-full ring-2 ring-white"*/}
-            {/*            src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"*/}
-            {/*            alt=""*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*</div>*/}
             <form onSubmit={(e) => handleCommentAdding(e)} className="w-full">
                 <div>
                     <textarea

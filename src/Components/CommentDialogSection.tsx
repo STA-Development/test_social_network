@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
@@ -17,8 +16,6 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import {CommentFromDB} from "../types/typeSection";
 import {Avatar} from "@mui/material";
-
-//TODO Make user comment be at first
 
 
 const Transition = React.forwardRef(function Transition(

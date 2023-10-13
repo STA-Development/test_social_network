@@ -34,7 +34,7 @@ export const ToastNotifySuccess = (message: string = '🤔 Operation successfull
     });
 }
 
-export const ToastNotifyEdit = (message: string = 'Your edit operation is done successfully'):void => {
+export const ToastNotifyWarning = (message: string = 'Your edit operation is done successfully'):void => {
     toast.warning(message, {
         position: "top-right",
         autoClose: 5000,

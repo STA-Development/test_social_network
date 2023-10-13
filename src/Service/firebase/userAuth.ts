@@ -5,8 +5,7 @@ import {
     onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
-    getRedirectResult,
-    updateProfile, getAuth
+    updateProfile
 } from "firebase/auth"
 import auth from "../../Firebase"
 

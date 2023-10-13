@@ -1,11 +1,9 @@
 import React, {useState} from "react";
 import Header from "../Components/Header";
-import {Link,useNavigate,useNavigation} from "react-router-dom";
-import {Puff} from "react-loader-spinner";
+import {Link,useNavigate} from "react-router-dom";
 import {signUpSchema} from "../validator";
 import {useFormik} from "formik";
 import {ToastContainer} from "react-toastify";
-import {TextField} from "../Components/common/TextField";
 import {createUser} from "../Service/firebase/userAuth";
 import {SignUpValues} from "../types/typeSection";
 import CoreButton from "../Components/common/CoreButton";
@@ -46,31 +44,6 @@ const SignUp = () => {
             }
         }
     })
-    // useEffect(():void => {
-    //     console.log(formik.errors)
-    //     if(formik.errors){
-    //         const errors = {...formik.errors}
-    //         console.log(Object.entries(formik.errors));
-    //         // Object.entries(formik.errors).map(([key, value]) => {
-    //         //     console.log(key, value);
-    //         //     ToastNotifyError(value)
-    //         // })
-    //     }
-    // }, [formik.errors]);
-
-    // https://stackoverflow.com/questions/60635093/react-formeventhtmlformelement-form-input-props-types
-    // const SignUp = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
-    //     e.preventDefault()
-    //    // if(validated) {
-    //    //     try {
-    //    //         const user = await createUser(email,password,userName)
-    //    //         const auth = getAuth();
-    //    //         navigate("/Profile")
-    //    //     }catch (e:any) {
-    //    //         console.log(e.message)
-    //    //     }
-    //    // }
-    // }
     return (
         <>
             <Header />
@@ -112,14 +85,7 @@ const SignUp = () => {
                                         onChange={formik.handleChange}
                                         value = {formik.values.username}
                                     />
-                                    {/*<TextField*/}
-                                    {/*    styles="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
-                                    {/*    type='text'*/}
-                                    {/*    isError={!!formik.errors.username}*/}
-                                    {/*    errorMessage={formik.errors.username}*/}
-                                    {/*    onChange={formik.handleChange}*/}
-                                    {/*    value = {formik.values.username}*/}
-                                    {/*/>*/}
+
                                 </div>
                             </div>
 

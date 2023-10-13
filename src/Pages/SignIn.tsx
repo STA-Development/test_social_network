@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import Header from "../Components/Header";
 import {authWithGoogle, signIn} from "../Service/firebase/userAuth";
 import {Link, useNavigate} from "react-router-dom";
-import {Alert} from "@mui/material";
 import {ToastNotifyError} from "../Helpers";
 import {ToastContainer} from "react-toastify";
-import {Oval} from "react-loader-spinner";
 import CoreButton from "../Components/common/CoreButton";
-import {useAppDispatch, useAppSelector} from "../Hooks/hook";
+import {useAppDispatch} from "../Hooks/hook";
 import {userAuth} from "../Redux/Store/auth/authSlice";
 
 const SignIn = () => {
@@ -116,28 +114,6 @@ const SignIn = () => {
                             </div>
 
                             <div>
-                                {/*<button*/}
-                                {/*    type="submit"*/}
-                                {/*    className = "w-full bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-white-dark p-2 rounded transition duration-200 ease-in"*/}
-                                {/*>*/}
-                                {/*    {loading?*/}
-                                {/*        <div className='w-full flex justify-center items-center'>*/}
-                                {/*            <Oval*/}
-                                {/*                height={30}*/}
-                                {/*                width={30}*/}
-                                {/*                color="#0f1e40"*/}
-                                {/*                wrapperStyle={{}}*/}
-                                {/*                wrapperClass=""*/}
-                                {/*                visible={true}*/}
-                                {/*                ariaLabel='oval-loading'*/}
-                                {/*                secondaryColor="#1f66ff"*/}
-                                {/*                strokeWidth={2}*/}
-                                {/*                strokeWidthSecondary={2}*/}
-                                {/*            />*/}
-                                {/*        </div>*/}
-                                {/*        :'Sign in'*/}
-                                {/*    }*/}
-                                {/*</button>*/}
                                 <CoreButton
                                     text='Sign in'
                                     loading={loading}

@@ -1,13 +1,11 @@
 import React from 'react';
-import {getAuth} from "firebase/auth";
 import {logOut} from "../Service/firebase/userAuth";
 import Header from "../Components/Header";
 import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {useNavigate} from "react-router-dom";
-import {userAuth, userLogOut} from "../Redux/Store/auth/authSlice";
+import {userLogOut} from "../Redux/Store/auth/authSlice";
 import ProfileSection from "../Components/ProfileSection";
 import {User} from "../types/typeSection";
-import {Oval} from "react-loader-spinner";
 
 
 const Profile = () => {
@@ -16,7 +14,7 @@ const Profile = () => {
     const user: User | null = useAppSelector(state => state.auth.auth)
     const handleSignOut = async (): Promise<void> => {
         try {
-            const out = await logOut()
+            await logOut()
             dispatch(userLogOut())
             console.log("Log out")
             navigate("/")
