@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react'
-import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
+import React, {  useState } from 'react'
+import { Dialog, Popover } from '@headlessui/react'
 import {
     Bars3Icon,
     XMarkIcon,
@@ -9,12 +9,17 @@ import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {User} from "../types/typeSection";
 import {logOut} from "../Service/firebase/userAuth";
 import {userLogOut} from "../Redux/Store/auth/authSlice";
+import { useSpring, animated } from 'react-spring'
 export default function Header() {
     const user:User | null = useAppSelector(state => state.auth.auth)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
-
+    const styles = useSpring({
+        from: { opacity: "0" },
+        to: { opacity: "1" },
+        config: { duration: 2000 },
+    })
     const handleSignOut = async(): Promise<void> => {
         try {
             const out = await logOut()
@@ -28,13 +33,13 @@ export default function Header() {
     return (
         <header className="bg-hardBlue border-b-2 border-orange text-gray">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1 max-sm:hidden items-center" >
+                <animated.div style={styles} className="flex lg:flex-1 max-sm:hidden items-center" >
                     <Link to="/" className="-m-1.5 p-1.5 border-solid border-2 border-orange">
-                        <span className="sr-only">Test Project</span>
+                        <span className="sr-only">Connect Hub</span>
                         <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
                     </Link>
                     <div className='ml-3'><Link to="/" className='text-white'>Connect<span className='text-orange'>Hub</span></Link></div>
-                </div>
+                </animated.div>
                 <div className="flex lg:hidden">
                     <button
                         type="button"

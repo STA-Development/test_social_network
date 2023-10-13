@@ -83,7 +83,7 @@ const CommentSection: React.FC<Props> = ({postId}) => {
                         </button>
                         <CoreButton
                             text='Add'
-                            styleClass='w-48 flex justify-center flex-wrap mt-3 bg-hardBlue  hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-white-dark p-1 rounded transition duration-200 ease-in'
+                            styleClass='w-32 flex justify-center flex-wrap mt-3 bg-hardBlue  hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-white-dark p-1 rounded transition duration-200 ease-in'
                             loading={loading}
                         />
                     </div>

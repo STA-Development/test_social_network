@@ -55,9 +55,9 @@ const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
             <PostEdit setLoading={setLoadingEdit} postId={currentPostId} open={open} wholePost={wholePost} handleClose={handleClose}/>
             {showUserPosts.length > 0 && showUserPosts.map((post, i) => {
                 return (
-                    <div key={i} className="w-full flex justify-center flex-col items-center mt-3 mb-3 pb-5">
+                    <div key={i} className="w-full min-h-auto flex justify-center flex-col items-center mt-3 mb-3 pb-5">
                         <div className="w-2/4 border-b-2 border-hardBlue mt-3 mb-3"></div>
-                        <div className="w-5/12 h-128 p-3 border-2 border-hardBlue shadow-2xl">
+                        <div className="w-5/12 p-3 border-2 border-hardBlue shadow-2xl">
                             <div className="w-full flex justify-between flex-wrap mb-6">
                                 <div className="flex flex-row">
                                     <img src={post.user.picture} alt="" className="w-10 h-10 rounded-full"/>
