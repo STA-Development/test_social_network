@@ -6,6 +6,19 @@ export const getAllPosts = async ():Promise<UserPost[]> => {
     return data;
 }
 
+export const allPostsLength = async () => {
+    const {data} = await axios.get(`http://localhost:3000/post/getAllPostsLength`)
+    return data
+}
+export const allUserPostsLength = async (token:string) => {
+    const {data} = await axios.get(`http://localhost:3000/post/getAllUserPostsLength`,{
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    return data
+}
+
 export const getCurrentUserPosts = async (user: User | null, token: string):Promise<UserPost[]> => {
     const {data}= await axios.get(`http://localhost:3000/post/userPosts/${user?.uId}`,{
         headers:{

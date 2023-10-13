@@ -1,55 +1,84 @@
 import React, {useState} from "react";
 import Header from "../Components/Header";
 import {Link,useNavigate,useNavigation} from "react-router-dom";
-import {createUser} from "../Service/firebase/userAuth";
-import {useAppDispatch} from "../Hooks/hook";
 import {Puff} from "react-loader-spinner";
-import {Alert} from "@mui/material";
+import {signUpSchema} from "../validator";
+import {useFormik} from "formik";
+import {ToastContainer} from "react-toastify";
+import {TextField} from "../Components/common/TextField";
+import {createUser} from "../Service/firebase/userAuth";
+import {SignUpValues} from "../types/typeSection";
+import CoreButton from "../Components/common/CoreButton";
+import {ToastNotifyError} from "../Helpers";
 import {userAuth} from "../Redux/Store/auth/authSlice";
-import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {useAppDispatch} from "../Hooks/hook";
 
 const SignUp = () => {
     const navigate = useNavigate()
-    const navigation = useNavigation()
-    const [userName, setUserName] = useState<string>("")
-    const [email,setEmail] = useState<string>("")
-    const [password,setPassword] = useState<string>("")
-    const [errorMessage, setErrorMessage] = useState<string>("")
+    const dispatch = useAppDispatch()
+    const [loading, setLoading] = useState<boolean>(false)
+    const formik = useFormik({
+        initialValues:{
+            username: '',
+            email:'',
+            password:''
+        },
+        validationSchema:signUpSchema,
+        onSubmit: async ({...values}:SignUpValues):Promise<void> => {
+            try {
+                setLoading(true)
+                const user = await createUser(values.email,values.password,values.username)
+                console.log(user)
+                if(user){
+                    dispatch(userAuth({
+                        uId: user.uid,
+                        name: user.displayName,
+                        email: user.email,
+                        picture: user.photoURL
+                    }))
+                    navigate("/Profile")
+                }
+                setLoading(false)
+            }catch(err:any){
+                setLoading(false)
+                ToastNotifyError(err.message)
+                console.error(err.message)
+            }
+        }
+    })
+    // useEffect(():void => {
+    //     console.log(formik.errors)
+    //     if(formik.errors){
+    //         const errors = {...formik.errors}
+    //         console.log(Object.entries(formik.errors));
+    //         // Object.entries(formik.errors).map(([key, value]) => {
+    //         //     console.log(key, value);
+    //         //     ToastNotifyError(value)
+    //         // })
+    //     }
+    // }, [formik.errors]);
 
     // https://stackoverflow.com/questions/60635093/react-formeventhtmlformelement-form-input-props-types
-    const SignUp = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
-        e.preventDefault()
-        setErrorMessage("")
-        try {
-            const user = await createUser(email,password,userName)
-            const auth = getAuth();
-            navigate("/Profile")
-        }catch (e:any) {
-            setErrorMessage(e.message)
-            console.log(e.message)
-        }
-    }
+    // const SignUp = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
+    //     e.preventDefault()
+    //    // if(validated) {
+    //    //     try {
+    //    //         const user = await createUser(email,password,userName)
+    //    //         const auth = getAuth();
+    //    //         navigate("/Profile")
+    //    //     }catch (e:any) {
+    //    //         console.log(e.message)
+    //    //     }
+    //    // }
+    // }
     return (
         <>
             <Header />
-            {/* TODO: make loading spinner */}
-            {   navigation.state === "loading" &&
-                <Puff
-                    height="80"
-                    width="80"
-                    radius={1}
-                    color="#4fa94d"
-                    ariaLabel="puff-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                />
-            }
             <div>
-                <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+                <div className="flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                        <div className="w-full flex justify-center">
-                            <div className="w-14 p-1 border-2 border-hardBlue">
+                        <div className="w-full flex justify-center items-center">
+                            <div className="w-14 p-1 border-2 border-orange">
                                 <Link to="/" >
                                     <img
                                         className="mx-auto h-10 w-auto"
@@ -58,30 +87,39 @@ const SignUp = () => {
                                     />
                                 </Link>
                             </div>
+                                <h1 className='ml-3'><span className='text-purple'>Connect<span className='text-orange'>Hub</span></span></h1>
                         </div>
                         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                             Create new account on Test project
                         </h2>
                     </div>
-
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        {errorMessage &&
-                            <Alert className="!transition ease-in duration-200" severity="error">{errorMessage}</Alert>
-                        }
-                        <form onSubmit={(e)=> SignUp(e)} className="space-y-6" action="#" method="POST">
+                        <form onSubmit={formik.handleSubmit} className="space-y-6" action="#" method="POST">
                             <div>
                                 <label htmlFor="username" className="block leading-6 text-left text-sm font-medium text-gray-900">
                                     UserName:
                                 </label>
                                 <div className="mt-2">
+                                    {formik.errors.username &&
+                                        <p className='text-red'>{formik.errors.username}</p>
+                                    }
                                     <input
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         name="username"
                                         id="username"
                                         type="text"
                                         placeholder="input your firstname"
-                                        onChange ={(e) => setUserName(e.target.value)}
+                                        onChange={formik.handleChange}
+                                        value = {formik.values.username}
                                     />
+                                    {/*<TextField*/}
+                                    {/*    styles="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
+                                    {/*    type='text'*/}
+                                    {/*    isError={!!formik.errors.username}*/}
+                                    {/*    errorMessage={formik.errors.username}*/}
+                                    {/*    onChange={formik.handleChange}*/}
+                                    {/*    value = {formik.values.username}*/}
+                                    {/*/>*/}
                                 </div>
                             </div>
 
@@ -90,6 +128,9 @@ const SignUp = () => {
                                     Email address:
                                 </label>
                                 <div className="mt-2">
+                                    {formik.errors.email &&
+                                        <p className='text-red'>{formik.errors.email}</p>
+                                    }
                                     <input
                                         id="email"
                                         name="email"
@@ -97,7 +138,8 @@ const SignUp = () => {
                                         autoComplete="email"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         placeholder="input your firstname"
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={formik.handleChange}
+                                        value = {formik.values.email}
                                     />
                                 </div>
                             </div>
@@ -109,6 +151,9 @@ const SignUp = () => {
                                     </label>
                                 </div>
                                 <div className="mt-2">
+                                    {formik.errors.password &&
+                                        <p className='text-red'>{formik.errors.password}</p>
+                                    }
                                     <input
                                         placeholder="input password: ••••••••"
                                         id="password"
@@ -116,36 +161,31 @@ const SignUp = () => {
                                         type="password"
                                         autoComplete="current-password"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange = {formik.handleChange}
+                                        value = {formik.values.password}
                                     />
                                 </div>
                             </div>
                             <div>
-                                <button
-                                    type="submit"
-                                    // className = "bg-hardBlue hover:bg-blue text-white-dark font-bold py-2 px-4 border-b-4 border-hardBlue hover:border-hardBlue rounded"
-                                    className = "w-full bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in"
-                                >
-                                    Sign up
-                                </button>
+
+                                <CoreButton
+                                    text='Sign up'
+                                    loading={loading}
+                                    styleClass={'w-full flex justify-center bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in'}
+                                />
                             </div>
-                            <div className="mt-10 text-center text-sm text-gray-500">
-                                you are already a member? then {' '}
-                                <p  className="mt-3 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                                    <Link to="/signIn" className="cursor-pointer text-hardBlue underline decoration-hardBlue">
-                                        <button
-                                            type="button"
-                                            className = "min-w-4 mx-3 bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white-dark hover:text-gray-dark p-1 rounded transition duration-200 ease-in"
-                                        >
-                                            sign in
-                                        </button>
-                                    </Link>
-                                </p>
+                            <div className='mt-5 flex flex-col justify-center items-center'>
+                                <div className='mt-6'>
+                                    <p className='text-center text-gray-dark'>
+                                        Already have an account?  <Link to='/signIn' className='text-orange hover:text-hardBlue transition duration-200 ease-in'>Go and sign In!</Link>
+                                    </p>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     )
 }

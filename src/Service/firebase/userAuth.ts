@@ -16,14 +16,12 @@ const provider:GoogleAuthProvider = new GoogleAuthProvider();
 provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 
-
-
 export const createUser = async (email:string,password:string,userName:string) => {
     return createUserWithEmailAndPassword(auth,email,password)
         .then((userCredential) => {
             const user = userCredential.user;
             if (user) {
-                return updateProfile(user, { displayName: userName })
+                return updateProfile(user, { displayName: userName, photoURL:'https://play-lh.googleusercontent.com/ZYoRp0dovFSmb_SIEkBS5vF2xFTwjYMOLqqz3zLHTD1RFvfBha7nxCWBvOR69fLuoxE' })
                     .then(() => user)
                     .catch((error) => {
                         console.error('Error updating profile:', error);
@@ -35,7 +33,7 @@ export const createUser = async (email:string,password:string,userName:string) =
         })
         .catch((error) => {
             console.error('Error creating user:', error);
-            return null;
+            throw new Error (error.message)
         });
 }
 export const authStateChanged = ():any=> {
@@ -53,28 +51,27 @@ export const logOut = () => {
 }
 
 export const authWithGoogle = async ()=>{
-    await signInWithPopup(auth, provider);
-    // const redirectResults = getRedirectResult(auth)
-    //     .then((result) => {
-    //         // This gives you a Google Access Token. You can use it to access Google APIs.
-    //
-    //         const credential = GoogleAuthProvider.credentialFromResult(result);
-    //         const token = credential?.accessToken;
-    //
-    //         // The signed-in user info.
-    //         const user = result?.user;
-    //         // IdP data available using getAdditionalUserInfo(result)
-    //         // ...
-    //     }).catch((error) => {
-    //     // Handle Errors here.
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // The email of the user's account used.
-    //     const email = error.customData.email;
-    //     // The AuthCredential type that was used.
-    //     const credential = GoogleAuthProvider.credentialFromError(error);
-    //     // ...
-    // });
-    // console.log(redirectResults)
+   const signIn =  await signInWithPopup(auth, provider).then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            if(credential){
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                // IdP data available using getAdditionalUserInfo(result)
+                // ...
+                return user
+            }
+    }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+    });
+    return signIn
 }
 

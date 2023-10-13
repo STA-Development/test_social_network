@@ -46,7 +46,7 @@ const CommentDialogSection:React.FC<Props> = ({open,handleClose,spinIsActive, po
                 onClose={() =>handleClose()}
                 TransitionComponent={Transition}
             >
-                <AppBar sx={{ position: 'relative' }}>
+                <AppBar sx={{ position: 'relative', background:'#363062',}}>
                     <Toolbar>
                         <IconButton
                             edge="start"

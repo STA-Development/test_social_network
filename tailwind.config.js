@@ -6,22 +6,24 @@ module.exports = {
   ],
   theme: {
     colors: {
-      'blue': '#1fb6ff',
-      'soft-blue': 'rgba(31,182,255,0.6)',
-      'hardBlue': '#1f66ff',
-      'purple': '#7e5bef',
-      'red': '#ff2626',
+      'blue': '#4D4C7D',
+      'soft-blue': 'rgba(77,76,125,0.38)',
+      'hardBlue': '#363062',
+      'purple': '#5D12D2',
+      'bright-red': '#FE0000',
+      'red': '#BB2525',
       'soft-red': 'rgba(255,38,38,0.3)',
       'pink': '#ff49db',
-      'orange': '#ff7849',
+      'orange': '#F99417',
       'green': '#13ce66',
-      'yellow': '#ffc82c',
-      'soft-yellow': 'rgba(255,200,44,0.35)',
+      'yellow': '#FFCD4B',
+      'soft-yellow': 'rgba(255,205,75,0.31)',
       'gray-dark': '#273444',
-      'gray': '#8492a6',
+      'gray': '#F5F5F5',
       'gray-light': '#d3dce6',
       'white-dark': '#faf8f8',
       'white': '#ffffff',
+      'back-white': '#F0F0F0'
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
@@ -34,7 +36,7 @@ module.exports = {
       },
       borderRadius: {
         '4xl': '2rem',
-      }
+      },
     }
   },
   plugins: [

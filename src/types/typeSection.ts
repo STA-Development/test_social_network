@@ -2,9 +2,9 @@ import {number} from "yup";
 
 export interface User {
     uId: string
-    name: string
-    email: string
-    picture: string | undefined
+    name: string |  null
+    email: string |  null
+    picture: string | undefined | null
 }
 export type Post = {
     title: string
@@ -45,3 +45,23 @@ export type UserPost = {
     userId: number
 }
 
+export type SignUpValues = {
+    username: string
+    email: string
+    password: string
+}
+
+
+/**
+ * @Search for  this comments  TSDoc
+ * Returns the average of two numbers.
+ *
+ * @remarks
+ * This method is part of the {@link core-library#Statistics | Statistics subsystem}.
+ *
+ * @param x - The first input number
+ * @param y - The second input number
+ * @returns The arithmetic mean of `x` and `y`
+ *
+ * @beta
+ */

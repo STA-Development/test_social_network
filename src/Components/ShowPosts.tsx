@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {deleteUserPost} from "../Service/User/RequestsForUsers";
 import {deleteImage} from "../Service/firebase/fileStorage";
 import {useAppSelector} from "../Hooks/hook";
+import CoreButton from "./common/CoreButton";
 
 interface props {
     userPost?: UserPost[] | undefined
@@ -16,6 +17,8 @@ interface props {
 }
 
 const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
+    const [loadingEdit, setLoadingEdit] = useState<boolean>(false)
+    const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
     const token: string = useAppSelector(state => state.auth.token)
     const [wholePost, setWholePost] = useState<UserPost>({} as UserPost)
     const [showUserPosts, setShowUserPosts] = useState<UserPost[]>([])
@@ -32,6 +35,7 @@ const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
         setWholePost({...post})
     };
     const deletePost = async (postId: number, photo: string): Promise<void> => {
+        setLoadingDelete(true)
         const restOfPosts: UserPost[] = await deleteUserPost(postId, token)
         if (photo) {
             deleteImage(photo.split('/')[7].split('?')[0])
@@ -39,6 +43,7 @@ const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
         if (setUserPost) {
             setUserPost([...restOfPosts])
         }
+        setLoadingDelete(false)
         ToastNotifySuccess('Your post hase been deleted')
         setShowUserPosts([...restOfPosts])
     }
@@ -47,12 +52,12 @@ const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
     };
     return (
         <div>
-            <PostEdit postId={currentPostId} open={open} wholePost={wholePost} handleClose={handleClose}/>
+            <PostEdit setLoading={setLoadingEdit} postId={currentPostId} open={open} wholePost={wholePost} handleClose={handleClose}/>
             {showUserPosts.length > 0 && showUserPosts.map((post, i) => {
                 return (
                     <div key={i} className="w-full flex justify-center flex-col items-center mt-3 mb-3 pb-5">
                         <div className="w-2/4 border-b-2 border-hardBlue mt-3 mb-3"></div>
-                        <div className="w-5/12 h-128 p-3 border-2 border-hardBlue">
+                        <div className="w-5/12 h-128 p-3 border-2 border-hardBlue shadow-2xl">
                             <div className="w-full flex justify-between flex-wrap mb-6">
                                 <div className="flex flex-row">
                                     <img src={post.user.picture} alt="" className="w-10 h-10 rounded-full"/>
@@ -63,14 +68,18 @@ const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
                                 </div>
                                 {edit &&
                                     <div className='flex justify-center items-center flex-wrap gap-2'>
-                                        <button onClick={() => handleClickOpen(post.id, post)}
-                                                className="w-32 p-1 transition duration-300 ease-in-out hover:bg-soft-yellow text-yellow font-semibold border border-blue-500 hover:border-transparent rounded">
-                                            <EditIcon/>
-                                        </button>
-                                        <button onClick={() => deletePost(post.id, post.photo)}
-                                                className="w-32 p-1  transition duration-300 ease-in-out hover:bg-soft-red text-red font-semibold border border-red-500 hover:border-transparent rounded">
-                                            <DeleteIcon/>
-                                        </button>
+                                        <CoreButton
+                                            loading={loadingEdit}
+                                            icon={<EditIcon/>}
+                                            styleClass='w-32 flex justify-center p-1 transition duration-300 ease-in-out hover:bg-soft-yellow text-yellow font-semibold border-2 border-blue-500 hover:border-transparent rounded'
+                                            onClick={() => handleClickOpen(post.id, post)}
+                                        />
+                                        <CoreButton
+                                            loading={loadingDelete}
+                                            icon={<DeleteIcon/>}
+                                            styleClass='w-32 p-1 flex justify-center  transition duration-300 ease-in-out hover:bg-soft-red text-red font-semibold border-2 border-red-500 hover:border-transparent rounded'
+                                            onClick={() => deletePost(post.id, post.photo)}
+                                        />
                                     </div>
                                 }
                             </div>

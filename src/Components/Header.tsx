@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
     Bars3Icon,
@@ -14,6 +14,7 @@ export default function Header() {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
+
     const handleSignOut = async(): Promise<void> => {
         try {
             const out = await logOut()
@@ -25,13 +26,14 @@ export default function Header() {
         }
     }
     return (
-        <header className="bg-white border-b-2 border-hardBlue">
+        <header className="bg-hardBlue border-b-2 border-orange text-gray">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1 max-sm:hidden" >
-                    <Link to="/" className="-m-1.5 p-1.5 border-solid border-2 border-hardBlue">
+                <div className="flex lg:flex-1 max-sm:hidden items-center" >
+                    <Link to="/" className="-m-1.5 p-1.5 border-solid border-2 border-orange">
                         <span className="sr-only">Test Project</span>
                         <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
                     </Link>
+                    <div className='ml-3'><Link to="/" className='text-white'>Connect<span className='text-orange'>Hub</span></Link></div>
                 </div>
                 <div className="flex lg:hidden">
                     <button
@@ -44,26 +46,31 @@ export default function Header() {
                     </button>
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
-                    <Link to="/feaders" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900">
-                        Feader
-                    </Link>
-
-                    <Link to="/posts" className="text-sm font-semibold leading-6 text-gray-900">
-                        Posts
-                    </Link>
-
-                    <Link to="/Profile" className="text-sm font-semibold leading-6 text-gray-900">
-                        Profile
-                    </Link>
+                    <div className='transition duration-200 ease-in hover:text-orange'>
+                        <Link to="/feaders" className="hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900 ">
+                            Feader
+                        </Link>
+                    </div>
+                    <div className='transition duration-200 ease-in hover:text-orange'>
+                        <Link to="/posts" className="text-sm font-semibold leading-6 text-gray-900">
+                            Posts
+                        </Link>
+                    </div>
+                    <div className='transition duration-200 ease-in hover:text-orange'>
+                        <Link to="/Profile" className="text-sm font-semibold leading-6 text-gray-900">
+                            Profile
+                        </Link>
+                    </div>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <Link to="/signIn" className="text-sm font-semibold leading-6 text-gray-900 mr-3">
-                        Sign in
-                    </Link>
+                    {!user &&
+                        <Link to="/signIn" className="text-sm font-semibold leading-6 text-gray-900 mr-3">
+                            Sign in
+                        </Link>
+                    }
                     {user &&
                         <>
-                            <span>/</span>
-                            <button onClick={() => handleSignOut()} className="text-sm font-semibold leading-6 text-red ml-3">
+                            <button onClick={() => handleSignOut()} className="text-sm font-semibold text-bright-red underline p-1 leading-6 ml-3">
                                 Sign Out
                             </button>
                         </>
@@ -115,16 +122,17 @@ export default function Header() {
 
                             </div>
                             <div className="py-6">
-                                <Link
-                                    to="/signIn"
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Sing In
-                                </Link>
+                                {!user &&
+                                    <Link
+                                        to="/signIn"
+                                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                    >
+                                        Sing In
+                                    </Link>
+                                }
                                 {user &&
                                     <>
-                                        <span>/</span>
-                                        <button onClick={() => handleSignOut()} className="text-sm font-semibold leading-6 text-red ml-3">
+                                        <button onClick={() => handleSignOut()} className="text-sm font-semibold leading-6  text-bright-red ml-3">
                                             Sign Out
                                         </button>
                                     </>

@@ -12,11 +12,13 @@ const ProfileSection:React.FC <{ user: User }> = ({user}) => {
     console.log(user)
     return (
         <div className="w-full mb-3">
-            <section className="w-80 mx-auto bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg">
+            <section className="w-80 h-96 mx-auto bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg">
                 <div className="mt-6 w-fit mx-auto">
                     <img
                         src={user?.picture || ""}
-                        alt=""/>
+                        alt=""
+                        referrerPolicy="no-referrer"
+                    />
                 </div>
 
                 <div className="mt-8 text-center">

@@ -1,62 +1,24 @@
 import React, {useEffect} from 'react';
-import Root from './Routes/root'
 import {
-  createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import ErrorPage from "./Pages/Error";
-import Feaders from './Pages/Feaders';
-import SignIn from "./Pages/SignIn";
-import PostControll from "./Pages/PostControll";
-// import SignUp from "./Pages/SignUp";
 import {useAppDispatch, useAppSelector} from "./Hooks/hook";
-import Profile from "./Pages/Profile";
 import auth from "./Firebase";
 import {userAuth, userLogOut, userToken} from "./Redux/Store/auth/authSlice";
-import PrivateRoutes from "./Components/PrivateRoutes";
 import axios from "axios";
-
-
-
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage message={null} />
-  },
-  {
-    path: "feaders",
-    element: <Feaders />
-  },
-  {
-    path: "signIn",
-    element: <SignIn />,
-  },
-  // {
-  //   path: "signUp",
-  //   element: <SignUp />
-  // },
-  {
-    path: "posts",
-    element: <PrivateRoutes elements={<PostControll />}/>
-  },
-  {
-    path:"Profile",
-    element: <PrivateRoutes elements={<Profile />}/>
-  }
-]);
+import {appRouter} from "./Routes/Router";
 
 
 function App() {
-  const user = useAppSelector(state => state.auth )
   const dispatch = useAppDispatch()
   useEffect(()=> {
+    console.log('asdasdhiasdkjansdkj___________')
     auth.onAuthStateChanged(authUser => {
       if(authUser){
+        console.log(authUser);
         authUser.getIdTokenResult().then(result=> {
-          const token = result.token
+          console.log(result);
+          const token:string = result.token
           dispatch(userToken(token))
           const request: Promise<void> = axios.get("http://localhost:3000/userAuth/verifyUser",{
             headers:{
@@ -71,7 +33,6 @@ function App() {
               picture: data.picture
             }))
           }).catch(e => console.log(e.message))
-
         }).catch(error => console.error("something wrong: " + error.message));
       }
       else{
@@ -81,7 +42,7 @@ function App() {
   },[])
 
   return (
-      <RouterProvider router={router} />
+      <RouterProvider router={appRouter} />
   );
 }
 

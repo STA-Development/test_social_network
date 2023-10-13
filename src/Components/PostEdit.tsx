@@ -9,25 +9,28 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Post, UserPost} from "../types/typeSection";
 import {postSchema} from "../validator";
-import { editUserPost} from "../Service/User/RequestsForUsers";
+import {allUserPostsLength, editUserPost} from "../Service/User/RequestsForUsers";
 import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {deleteImage} from "../Service/firebase/fileStorage";
 import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {editPosts} from "../Redux/Store/posts/postsSlice";
+import {bool} from "yup";
 
 interface Props {
     open: boolean
     handleClose: Function
     postId: number
     wholePost: UserPost
+    setLoading: Function
 }
-const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
+const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost,setLoading}) => {
     const dispatch = useAppDispatch()
+    const [blur,setBlur] = useState<boolean>(false)
     const [showNotDelete, setShowNotDelete] = useState<boolean>(false)
     const [notDelete, setNotDelete] = useState<boolean>(false)
-
     const token = useAppSelector(state => state.auth.token)
     const [filePreview, setFilePreview] = useState('')
+    // const [postsLength, setPostsLength] = useState<number>(0)
     const [postData, setPostData] = useState<Post>({
         title: '',
         description: '',
@@ -46,14 +49,17 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
         setPostData({...postData,photo:e.target})
         console.log(e.target.files)
         setShowNotDelete(false)
+        setBlur(false)
         setNotDelete(true)
         if(e.target.files){
             const url:string = URL.createObjectURL(e.target.files[0])
             setFilePreview(url)
         }
     }
-    const handleDeletePhoto = () => {
+    const handleDeletePhoto = async () => {
         setNotDelete(!notDelete)
+        setBlur(!blur)
+        console.log(notDelete)
     }
     const editPost = async (e:FormEvent):Promise<void> => {
         e.preventDefault()
@@ -68,6 +74,7 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
             }
             editFormData.append('delete', String(notDelete))
             try {
+                setLoading(true)
                 const editedPostResponse:[UserPost[], string] = await editUserPost(postId,editFormData,token)
                 const allPosts:UserPost[] = editedPostResponse[0]
                 dispatch(editPosts(allPosts))
@@ -80,6 +87,9 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
                     description: '',
                     photo:{},
                 })
+                setNotDelete(false)
+                setLoading(false)
+                setBlur(false)
                 ToastNotifySuccess()
             }catch (error: any){
                 console.error(error.message)
@@ -94,7 +104,9 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
         <div className='w-full'>
             <Dialog open={open} onClose={() => {
                 handleClose()
+                setNotDelete(false)
                 setShowNotDelete(false)
+                setBlur(false)
             }}>
                 <DialogTitle>EDIT</DialogTitle>
                 <DialogContent>
@@ -134,18 +146,21 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
                                 id="image"
                             />
                         </div>
-                        {showNotDelete &&
-                            <div className='w-full flex justify-center items-center'>
-                                <div onClick={() => handleDeletePhoto()} className={notDelete? 'cursor-pointer text-red text-2xl' : 'cursor-pointer text-white-dark text-2xl'}>
-                                    <HighlightOffIcon fontSize={'large'} />
+
+                        <div className='relative'>
+                            {filePreview && filePreview.length>0 &&
+                                <div className='w-full flex justify-center mt-3'>
+                                    <img src={filePreview} alt="" className={`w-72 h-56 transition duration-200 ease-in ${blur && 'blur'}`}/>
                                 </div>
-                            </div>
-                        }
-                        {filePreview && filePreview.length>0 &&
-                            <div className='w-full flex justify-center mt-3 relative'>
-                                <img src={filePreview} alt="" className={`w-72 h-56 transition duration-200 ease-in`}/>
-                            </div>
-                        }
+                            }
+                            {showNotDelete && filePreview.length>0 &&
+                                <div className='absolute top-3 right-10 -mt-1'>
+                                    <div onClick={() => handleDeletePhoto()} className={notDelete? 'cursor-pointer bg-none transition duration-200 ease-in text-bright-red text-2xl' : 'cursor-pointer transition duration-200 ease-in text-white-dark text-2xl'}>
+                                        <HighlightOffIcon fontSize={'large'} />
+                                    </div>
+                                </div>
+                            }
+                        </div>
                         <div className="w-full mt-3">
                             <button
                                 type="submit"
@@ -160,7 +175,9 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost}) => {
                 <DialogActions>
                     <Button onClick={() => {
                         handleClose()
+                        setNotDelete(false)
                         setShowNotDelete(false)
+                        setBlur(false)
                     }}>Cancel</Button>
                 </DialogActions>
             </Dialog>
