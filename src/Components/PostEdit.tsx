@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {Post, UserPost} from "../types/typeSection";
 import {postSchema} from "../validator";
 import {editUserPost} from "../Service/User/RequestsForUsers";
-import {ToastNotifyEdit, ToastNotifyError, ToastNotifySuccess} from "../Helpers";
+import {ToastNotifyError, ToastNotifySuccess} from "../Helpers";
 import {deleteImage} from "../Service/firebase/fileStorage";
 import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {editPosts} from "../Redux/Store/posts/postsSlice";
