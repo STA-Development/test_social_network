@@ -34,7 +34,9 @@ module.exports = {
         '8xl': '96rem',
         '9xl': '128rem',
       },
-
+      height: {
+        '[1000]': '1500px'
+      },
       borderRadius: {
         '4xl': '2rem',
       },

@@ -167,7 +167,7 @@ const PostControll = () => {
                     </form>
                 </div>
             </div>
-            <ShowPosts edit={true} userPost={userPost} setUserPost={setUserPost}  />
+            <ShowPosts edit={true} userPost={userPost} setUserPost={setUserPost} postsLength={postsLength} setPostsLength={setPostsLength}  />
             {userPost.length === 0 && loading  &&
                 <div className='w-full h-full text-center'>
                     <h1 className=''>There is no posts right now</h1>

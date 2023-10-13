@@ -12,7 +12,6 @@ import {appRouter} from "./Routes/Router";
 function App() {
   const dispatch = useAppDispatch()
   useEffect(()=> {
-    console.log('asdasdhiasdkjansdkj___________')
     auth.onAuthStateChanged(authUser => {
       if(authUser){
         console.log(authUser);

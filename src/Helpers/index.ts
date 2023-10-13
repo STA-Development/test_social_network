@@ -1,11 +1,12 @@
 import {toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {format, parseISO} from 'date-fns'
 
 export const DataEditor = (date: string | undefined): string => {
     if(!date){
         return ""
     }
-        return date.split('T')[0]
+    return format(parseISO(date),'dd/MM/yyyy').toString()
 }
 
 export const ToastNotifyError = (message: string = '🤔 Something went wrong check if value is correct and not empty!'):void => {

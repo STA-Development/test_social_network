@@ -59,7 +59,6 @@ const PostEdit:React.FC<Props> = ({open, handleClose, postId,wholePost,setLoadin
     const handleDeletePhoto = async () => {
         setNotDelete(!notDelete)
         setBlur(!blur)
-        console.log(notDelete)
     }
     const editPost = async (e:FormEvent):Promise<void> => {
         e.preventDefault()

@@ -14,9 +14,11 @@ interface props {
     userPost?: UserPost[] | undefined
     edit?: boolean
     setUserPost?: Function
+    postsLength?:number
+    setPostsLength?: Function
 }
 
-const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
+const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost,postsLength,setPostsLength}) => {
     const [loadingEdit, setLoadingEdit] = useState<boolean>(false)
     const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
     const token: string = useAppSelector(state => state.auth.token)
@@ -44,6 +46,7 @@ const ShowPosts: React.FC<props> = ({userPost, edit, setUserPost}) => {
             setUserPost([...restOfPosts])
         }
         setLoadingDelete(false)
+        if(postsLength && setPostsLength)setPostsLength(--postsLength)
         ToastNotifySuccess('Your post hase been deleted')
         setShowUserPosts([...restOfPosts])
     }
