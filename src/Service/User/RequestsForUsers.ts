@@ -20,7 +20,7 @@ export const allUserPostsLength = async (token:string) => {
 }
 
 export const getCurrentUserPosts = async (user: User | null, token: string):Promise<UserPost[]> => {
-    const {data}= await axios.get(`http://localhost:3000/post/userPosts/${user?.uId}`,{
+    const {data}= await axios.get(`http://localhost:3000/post/user/${user?.uId}`,{
         headers:{
             Authorization: `Bearer ${token}`
         }
@@ -28,7 +28,7 @@ export const getCurrentUserPosts = async (user: User | null, token: string):Prom
     return data
 }
 export const createPost = async (postFormData: FormData, token:string):Promise<UserPost[]> => {
-    const {data} = await axios.post('http://localhost:3000/post/createPost', postFormData,{
+    const {data} = await axios.post('http://localhost:3000/post', postFormData,{
         headers: {
             Authorization:`Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -55,7 +55,7 @@ export const addUserNextTenPosts = async (length:number, token: string):Promise<
 
 export const editUserPost = async (postId:number, editFormData:FormData, token: string):Promise<[UserPost[], string]> => {
     console.log('...editing')
-    console.log(editFormData.get('title'))
+    // console.log(editFormData.get('title'))
     const {data} = await axios.patch(`http://localhost:3000/post/edit/${postId}`,editFormData,{
         headers:{
             Authorization: `Bearer ${token}`,

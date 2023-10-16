@@ -4,7 +4,7 @@ import Header from "../Components/Header";
 import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {useNavigate} from "react-router-dom";
 import {userLogOut} from "../Redux/Store/auth/authSlice";
-import ProfileSection from "../Components/ProfileSection";
+import ProfileSection from "../Components/Profile/ProfileSection";
 import {User} from "../types/typeSection";
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {User} from "../types/typeSection";
+import {User} from "../../types/typeSection";
 
 const ProfileSection:React.FC <{ user: User }> = ({user}) => {
     return (
