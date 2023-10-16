@@ -9,20 +9,14 @@ import {useAppDispatch, useAppSelector} from "../Hooks/hook";
 import {User} from "../types/typeSection";
 import {logOut} from "../Service/firebase/userAuth";
 import {userLogOut} from "../Redux/Store/auth/authSlice";
-import { useSpring, animated } from 'react-spring'
 export default function Header() {
     const user:User | null = useAppSelector(state => state.auth.auth)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
-    const styles = useSpring({
-        from: { opacity: "0" },
-        to: { opacity: "1" },
-        config: { duration: 2000 },
-    })
     const handleSignOut = async(): Promise<void> => {
         try {
-            const out = await logOut()
+            await logOut()
             dispatch(userLogOut())
             console.log("Log out")
             navigate("/")
@@ -33,13 +27,13 @@ export default function Header() {
     return (
         <header className="bg-hardBlue border-b-2 border-orange text-gray relative z-10">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <animated.div style={styles} className="flex lg:flex-1 max-sm:hidden items-center" >
+                <div className="flex lg:flex-1 max-sm:hidden items-center">
                     <Link to="/" className="-m-1.5 p-1.5 border-solid border-2 border-orange">
                         <span className="sr-only">Connect Hub</span>
                         <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
                     </Link>
                     <div className='ml-3'><Link to="/" className='text-white'>Connect<span className='text-orange'>Hub</span></Link></div>
-                </animated.div>
+                </div>
                 <div className="flex lg:hidden">
                     <button
                         type="button"
@@ -69,9 +63,12 @@ export default function Header() {
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                     {!user &&
-                        <Link to="/signIn" className="text-sm font-semibold leading-6 text-gray-900 mr-3">
-                            Sign in
-                        </Link>
+                        <div className='flex items-center' >
+                            <Link to="/signIn" className="text-sm font-semibold leading-6 text-gray-900 mr-3">
+                                Sign in
+                            </Link>
+                            <div className='w-10 h-10 rounded-full'></div>
+                        </div>
                     }
                     {user &&
                         <>
@@ -129,18 +126,22 @@ export default function Header() {
                             </div>
                             <div className="py-6">
                                 {!user &&
-                                    <Link
-                                        to="/signIn"
-                                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                    >
-                                        Sing In
-                                    </Link>
+                                    <>
+                                        <Link
+                                            to="/signIn"
+                                            className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                        >
+                                            Sing In
+                                        </Link>
+                                        <div className='w-10 h-10 rounded-full'></div>
+                                    </>
                                 }
                                 {user &&
                                     <>
                                         <button onClick={() => handleSignOut()} className="text-sm font-semibold leading-6  text-bright-red ml-3">
                                             Sign Out
                                         </button>
+                                        <img src={user.picture? user.picture: ''} className='w-10 h-10 rounded-full' alt=""/>
                                     </>
                                 }
                             </div>

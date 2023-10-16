@@ -35,7 +35,8 @@ module.exports = {
         '9xl': '128rem',
       },
       height: {
-        '[1000]': '1500px'
+        '[1000]': '1500px',
+        'HeaderScreen': 'calc(100vh - 90px)',
       },
       borderRadius: {
         '4xl': '2rem',

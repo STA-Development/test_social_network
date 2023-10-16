@@ -20,7 +20,7 @@ export const createUser = async (email:string,password:string,userName:string) =
         .then((userCredential) => {
             const user = userCredential.user;
             if (user) {
-                return updateProfile(user, { displayName: userName, photoURL:'https://play-lh.googleusercontent.com/ZYoRp0dovFSmb_SIEkBS5vF2xFTwjYMOLqqz3zLHTD1RFvfBha7nxCWBvOR69fLuoxE' })
+                return updateProfile(user, { displayName: userName, photoURL:'/butman.png' })
                     .then(() => user)
                     .catch((error) => {
                         console.error('Error updating profile:', error);
