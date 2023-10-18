@@ -4,10 +4,11 @@ export interface User {
     email: string |  null
     picture: string | undefined | null
 }
+
 export type Post = {
     title: string
     description: string
-    photo: any
+    photo: EventTarget & HTMLInputElement | null
     userId?: string | undefined
 }
 
@@ -16,12 +17,14 @@ export type UserFromDB = {
     userName: string
     picture: string
 }
-export type UserAditional ={
+
+export type UserAdditional ={
     id:number
     userName: string
     picture: string
     userIdToken: string
 }
+
 export type CommentFromDB = {
     id: number
     comment: string
@@ -29,8 +32,9 @@ export type CommentFromDB = {
     postId: number
     createdAt: string
     updatedAt: string
-    user:UserAditional
+    user:UserAdditional
 }
+
 export type UserPost = {
     id: number
     title: string

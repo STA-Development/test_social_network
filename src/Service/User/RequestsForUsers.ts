@@ -1,93 +1,93 @@
-import axios from "axios";
-import {User, UserPost} from "../../types/typeSection";
+import {User, UserPost} from '../../types/typeSection';
+import http from '../../api/httpService';
 
 export const getAllPosts = async ():Promise<UserPost[]> => {
-    const { data } = await axios.get('http://localhost:3000/post/getAllPosts')
-    return data;
-}
+	const { data } = await http.get('/post/getAllPosts');
+	return data;
+};
 
 export const allPostsLength = async () => {
-    const {data} = await axios.get(`http://localhost:3000/post/getAllPostsLength`)
-    return data
-}
+	const {data} = await http.get('/post/getAllPostsLength');
+	return data;
+};
 export const allUserPostsLength = async (token:string) => {
-    const {data} = await axios.get(`http://localhost:3000/post/getAllUserPostsLength`,{
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return data
-}
+	const {data} = await http.get('/post/getAllUserPostsLength',{
+		headers:{
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return data;
+};
 
 export const getCurrentUserPosts = async (user: User | null, token: string):Promise<UserPost[]> => {
-    const {data}= await axios.get(`http://localhost:3000/post/user/${user?.uId}`,{
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return data
-}
+	const {data}= await http.get(`/post/user/${user?.uId}`,{
+		headers:{
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return data; 
+};
 export const createPost = async (postFormData: FormData, token:string):Promise<UserPost[]> => {
-    const {data} = await axios.post('http://localhost:3000/post', postFormData,{
-        headers: {
-            Authorization:`Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-        }
-    })
-    return data
-}
+	const {data} = await http.post('/post', postFormData,{
+		headers: {
+			Authorization:`Bearer ${token}`,
+			'Content-Type': 'multipart/form-data',
+		}
+	});
+	return data;
+};
 
 export const addNextTenPosts = async (length:number): Promise<UserPost[]> => {
-    console.log('...gettingNext')
-    const {data} = await axios.get(`http://localhost:3000/post/getAllPosts/${length}`)
-    return data
-}
+	console.log('...gettingNext');
+	const {data} = await http.get(`/post/getAllPosts/${length}`);
+	return data;
+};
 
 export const addUserNextTenPosts = async (length:number, token: string):Promise<UserPost[]> => {
-    console.log('...gettingNext for User')
-    const {data} = await axios.get(`http://localhost:3000/post/getUserAllPosts/${length}`,{
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return data
-}
+	console.log('...gettingNext for User');
+	const {data} = await http.get(`/post/getUserAllPosts/${length}`,{
+		headers:{
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return data;
+};
 
 export const editUserPost = async (postId:number, editFormData:FormData, token: string):Promise<[UserPost[], string]> => {
-    console.log('...editing')
-    // console.log(editFormData.get('title'))
-    const {data} = await axios.patch(`http://localhost:3000/post/edit/${postId}`,editFormData,{
-        headers:{
-            Authorization: `Bearer ${token}`,
-            "Content-type": "multipart/form-data"
-        }
-    })
-    return data
-}
+	console.log('...editing');
+	// console.log(editFormData.get('title'))
+	const {data} = await http.patch(`/post/edit/${postId}`,editFormData,{
+		headers:{
+			Authorization: `Bearer ${token}`,
+			'Content-type': 'multipart/form-data'
+		}
+	});
+	return data;
+};
 
 export const deleteUserPost = async (postId:number, token: string):Promise<UserPost[]> => {
-    console.log('...deleting')
-    const {data} = await axios.delete(`http://localhost:3000/post/delete/${postId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return data
-}
+	console.log('...deleting');
+	const {data} = await http.delete(`/post/delete/${postId}`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return data;
+};
 
 
 export const addComment = async (comment:string, postId:number,token:string) => {
-    console.log('...adding Comment')
-    const {data} = await axios.post(`http://localhost:3000/comment/addComment`, {comment,postId},{
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return data
-}
+	console.log('...adding Comment');
+	const {data} = await http.post('/comment/addComment', {comment,postId},{
+		headers:{
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return data;
+};
 
-export const getComments = async(postId:number,token:string) => {
-    console.log('...getting Comments')
-    const {data} = await axios.get(`http://localhost:3000/comment/allComments/${postId}`)
-    return data
-}
+export const getComments = async(postId:number) => {
+	console.log('...getting Comments');
+	const {data} = await http.get(`comment/allComments/${postId}`);
+	return data;
+};
