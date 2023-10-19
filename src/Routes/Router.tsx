@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import Root from './root';
 import ErrorPage from '../Pages/Error';
-import Readers from '../Pages/Readers';
+import News from '../Pages/News';
 import SignIn from '../Pages/SignIn';
 import SignUp from '../Pages/SignUp';
 import PrivateRoutes from '../Components/PrivateRoutes';
@@ -16,8 +16,8 @@ const appRouter = createBrowserRouter([
     errorElement: <ErrorPage message={null} />,
   },
   {
-    path: 'Readers',
-    element: <Readers />,
+    path: 'News',
+    element: <News />,
   },
   {
     path: 'signIn',

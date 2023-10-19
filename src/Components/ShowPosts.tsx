@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserPost } from '../types/typeSection';
-import CommentSection from './CommentSection';
+import CommentSection from './Comments';
 import { DataEditor, ToastNotifySuccess } from '../Helpers';
 import PostEdit from './PostEdit';
 import { deleteUserPost } from '../Service/User/RequestsForUsers';

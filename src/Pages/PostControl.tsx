@@ -125,6 +125,8 @@ const PostControl = () => {
         <div className='w-full flex flex-col justify-center items-center mb-3'>
           <div className='border-2 border-orange p-3 mb-3'>
             <img
+              width='37'
+              height='32'
               className='h-8 w-auto'
               src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
               alt=''

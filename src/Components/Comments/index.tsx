@@ -1,11 +1,11 @@
 import React, { FormEvent, useState } from 'react';
-import CommentDialogSection from './CommentDialogSection';
-import { addComment, getComments } from '../Service/User/RequestsForUsers';
-import { useAppSelector } from '../Hooks/hook';
-import { commentSchema } from '../validator';
-import { ToastNotifyError, ToastNotifySuccess } from '../Helpers';
-import { CommentFromDB, User } from '../types/typeSection';
-import CoreButton from './common/CoreButton';
+import CommentDialogSection from './common/CommentDialogSection';
+import { addComment, getComments } from '../../Service/User/RequestsForUsers';
+import { useAppSelector } from '../../Hooks/hook';
+import { commentSchema } from '../../validator';
+import { ToastNotifyError, ToastNotifySuccess } from '../../Helpers';
+import { CommentFromDB, User } from '../../types/typeSection';
+import CoreButton from '../common/CoreButton';
 
 interface Props {
   postId: number;

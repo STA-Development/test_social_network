@@ -1,14 +1,15 @@
 import { ref, deleteObject } from 'firebase/storage';
 import { storage } from '../../Firebase';
+import { ToastNotifyError } from '../../Helpers';
 
-const deleteImage = (photoName: string) => {
+const deleteImage = async (photoName: string) => {
   const imageRef = ref(storage, photoName);
-  deleteObject(imageRef)
-    .then((): void => {
-      console.log('old image removed');
-    })
-    .catch((error): void => {
-      console.log(error.message);
-    });
+  try {
+    await deleteObject(imageRef);
+  } catch (error) {
+    if (error instanceof Error) {
+      ToastNotifyError(error.message);
+    }
+  }
 };
 export default deleteImage;

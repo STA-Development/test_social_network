@@ -69,10 +69,10 @@ const Header = () => {
         <Popover.Group className='hidden lg:flex lg:gap-x-12'>
           <div className='transition duration-200 ease-in hover:text-orange'>
             <Link
-              to='/Readers'
+              to='/News'
               className='hover:underline-offset-3 decoration-hardBlue text-sm font-semibold leading-6 text-gray-900 '
             >
-              Readers
+              News
             </Link>
           </div>
           <div className='transition duration-200 ease-in hover:text-orange'>
@@ -115,6 +115,8 @@ const Header = () => {
               </button>
               <Link to='/Profile'>
                 <img
+                  width='40'
+                  height='40'
                   src={user.picture ? user.picture : ''}
                   className='w-10 h-10 rounded-full'
                   alt=''
@@ -154,10 +156,10 @@ const Header = () => {
             <div className='-my-6 divide-y divide-gray-500/10'>
               <div className='space-y-2 py-6'>
                 <Link
-                  to='/Readers'
+                  to='/News'
                   className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
                 >
-                  Readers
+                  News
                 </Link>
                 <Link
                   to='/posts'

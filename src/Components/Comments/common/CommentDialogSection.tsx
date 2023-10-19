@@ -15,7 +15,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Avatar } from '@mui/material';
-import { CommentFromDB } from '../types/typeSection';
+import { CommentFromDB } from '../../../types/typeSection';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

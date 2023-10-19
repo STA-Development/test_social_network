@@ -13,7 +13,7 @@ import {
 import { ToastNotifyError } from '../Helpers';
 import { useAppSelector } from '../Hooks/hook';
 
-const Readers = () => {
+const News = () => {
   const token: string = useAppSelector((state) => state.auth.token);
   const [loading, setLoading] = useState<boolean>(false);
   const [allPosts, setAllPosts] = useState<UserPost[]>([]);
@@ -82,4 +82,4 @@ const Readers = () => {
     </>
   );
 };
-export default Readers;
+export default News;
