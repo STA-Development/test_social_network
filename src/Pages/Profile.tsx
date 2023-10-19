@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../Hooks/hook';
 import { userLogOut } from '../Redux/Store/auth/authSlice';
 import { User } from '../types/typeSection';
 import ProfileSection from '../Components/Profile';
-import ProfileSettings from '../Components/Profile/common/ProfileSettings';
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -40,9 +39,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <main className=''>
-        <ProfileSettings />
-      </main>
     </>
   );
 };
