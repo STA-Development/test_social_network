@@ -104,6 +104,6 @@ export const addComment = async (
 };
 
 export const getComments = async (postId: number) => {
-  const { data } = await http.get(`comment/allComments/${postId}`);
+  const { data } = await http.get(`comment/getAll/${postId}`);
   return data;
 };

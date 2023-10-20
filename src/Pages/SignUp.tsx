@@ -80,7 +80,6 @@ const SignUp = () => {
             <form
               onSubmit={formik.handleSubmit}
               className='space-y-6'
-              action='#'
               method='POST'
             >
               <div>

@@ -1,4 +1,5 @@
-import React, { FormEvent, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
 import CommentDialogSection from './common/CommentDialogSection';
 import { addComment, getComments } from '../../Service/User/RequestsForUsers';
 import { useAppSelector } from '../../Hooks/hook';
@@ -15,7 +16,6 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
   const user: User | null = useAppSelector((state) => state.auth.auth);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>('');
   const token: string = useAppSelector((state) => state.auth.token);
   const [spinIsActive, setSpinIsActive] = useState<boolean>(false);
   const [postComments, setPostComments] = useState<CommentFromDB[]>([]);
@@ -27,43 +27,52 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
     setSpinIsActive(false);
     setOpen(true);
   };
-  const handleCommentAdding = async (e: FormEvent): Promise<void> => {
-    e.preventDefault();
-    if (user) {
-      const validationRules: boolean = await commentSchema.isValid({ comment });
-      if (validationRules) {
-        setLoading(true);
-        await addComment(comment, postId, token);
-        setComment('');
-        setLoading(false);
-        ToastNotifySuccess(
-          'Your comment has been added check in show Comments',
-        );
+  const formik = useFormik({
+    initialValues: {
+      comment: '',
+    },
+    validationSchema: commentSchema,
+    onSubmit: async (): Promise<void> => {
+      if (user) {
+        try {
+          setLoading(true);
+          await addComment(formik.values.comment, postId, token);
+          setLoading(false);
+          ToastNotifySuccess(
+            'Your comment has been added check in show Comments',
+          );
+        } catch (error) {
+          if (error instanceof Error) {
+            ToastNotifyError(formik.errors.comment);
+          }
+        }
       } else {
         setLoading(false);
-        ToastNotifyError(
-          'Something went wrong (remember text is required and must be lower then 200)🤔',
-        );
+        ToastNotifyError("It seems you haven't sign in yet");
       }
-    } else {
-      ToastNotifyError('It seems you are not singed In🤔');
-    }
-  };
+    },
+  });
   const handleClose = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    if (formik.errors.comment) {
+      ToastNotifyError(formik.errors.comment);
+    }
+  }, [formik.errors.comment]);
 
   return (
     <section className='w-full flex justify-center flex-col p-3 mt-3'>
-      <form onSubmit={(e) => handleCommentAdding(e)} className='w-full'>
+      <form onSubmit={formik.handleSubmit} className='w-full'>
         <div>
           <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
             id='message'
+            name='comment'
             rows={4}
             className='block p-2.5 shadow-2xl w-full text-sm text-gray-dark bg-gray-50 rounded-lg focus:border-hardBlue border-hardBlue resize-none'
             placeholder='Write your thoughts here...'
+            onChange={formik.handleChange}
+            value={formik.values.comment}
           />
           <div className='w-full flex items-center justify-between flex-wrap rounded-lg h-16'>
             <button
