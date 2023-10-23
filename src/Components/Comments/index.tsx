@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import CommentDialogSection from './common/CommentDialogSection';
 import { addComment, getComments } from '../../Service/User/RequestsForUsers';
@@ -38,6 +38,7 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
           setLoading(true);
           await addComment(formik.values.comment, postId, token);
           setLoading(false);
+          formik.values.comment = '';
           ToastNotifySuccess(
             'Your comment has been added check in show Comments',
           );
@@ -55,16 +56,13 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    if (formik.errors.comment) {
-      ToastNotifyError(formik.errors.comment);
-    }
-  }, [formik.errors.comment]);
-
   return (
     <section className='w-full flex justify-center flex-col p-3 mt-3'>
       <form onSubmit={formik.handleSubmit} className='w-full'>
         <div>
+          {formik.errors.comment && (
+            <p className='text-bright-red'>{formik.errors.comment}</p>
+          )}
           <textarea
             id='message'
             name='comment'
