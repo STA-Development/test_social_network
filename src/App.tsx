@@ -1,16 +1,12 @@
 import React from 'react';
-import './App.css';
+import { RouterProvider } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="">
-          <h1 className="text-3xl font-bold underline text-red-600">
-              Simple React Typescript Tailwind Sample
-          </h1>
-      </header>
-    </div>
-  );
-}
+import appRouter from './Routes/Router';
+import useAuth from './Hooks/useAuth';
+
+const App = (): JSX.Element => {
+  useAuth();
+  return <RouterProvider router={appRouter} />;
+};
 
 export default App;
