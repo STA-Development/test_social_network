@@ -57,7 +57,7 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
     setOpen(false);
   };
   return (
-    <section className='w-full flex justify-center flex-col p-3 mt-3'>
+    <section className='w-full flex justify-center flex-col mt-3'>
       <form onSubmit={formik.handleSubmit} className='w-full'>
         <div>
           {formik.errors.comment && (
@@ -72,7 +72,7 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
             onChange={formik.handleChange}
             value={formik.values.comment}
           />
-          <div className='w-full flex items-center justify-between flex-wrap rounded-lg h-16'>
+          <div className='w-full h-full flex items-center justify-between sm:items-center flex-wrap rounded-lg h-16'>
             <button
               type='button'
               onClick={(e) => handleClickOpen(e)}

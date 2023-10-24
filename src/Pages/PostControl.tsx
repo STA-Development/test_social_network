@@ -202,7 +202,7 @@ const PostControl = () => {
             )}
             <div className='w-full mt-3'>
               <CoreButton
-                text='Add Post'
+                text='Add PostHeader'
                 loading={buttonLoading}
                 type='submit'
                 styleClass='w-full flex justify-center bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white hover:text-w p-2 rounded transition duration-200 ease-in'

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Oval } from 'react-loader-spinner';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   styleClass: string;
-  loading: boolean;
+  loading?: boolean;
   icon?: JSX.Element;
 }
 
@@ -18,7 +18,7 @@ const CoreButton: React.FC<ButtonProps> = ({
   return (
     <div>
       {icon ? (
-        <button type='button' {...rest} className={styleClass}>
+        <button key={useId()} type='button' {...rest} className={styleClass}>
           {loading ? (
             <Oval
               height={25}

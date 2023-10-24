@@ -8,11 +8,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Post, UserPost } from '../types/typeSection';
 import { postSchema } from '../validator';
-import { editUserPost } from '../Service/User/RequestsForUsers';
-import { ToastNotifyError, ToastNotifySuccess } from '../Helpers';
-import deleteImage from '../Service/firebase/fileStorage';
+import usePostEdit from '../Hooks/usePostEdit';
 import { useAppDispatch, useAppSelector } from '../Hooks/hook';
-import { editPosts } from '../Redux/Store/posts/postsSlice';
+import CoreButton from './common/CoreButton';
 
 interface Props {
   open: boolean;
@@ -20,6 +18,7 @@ interface Props {
   postId: number;
   wholePost: UserPost;
   setLoading: (T: boolean) => void;
+  loadingEdit: boolean;
 }
 const PostEdit: React.FC<Props> = ({
   open,
@@ -27,12 +26,13 @@ const PostEdit: React.FC<Props> = ({
   postId,
   wholePost,
   setLoading,
+  loadingEdit,
 }) => {
   const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.auth.token);
   const [blur, setBlur] = useState<boolean>(false);
   const [showNotDelete, setShowNotDelete] = useState<boolean>(false);
   const [notDelete, setNotDelete] = useState<boolean>(false);
-  const token = useAppSelector((state) => state.auth.token);
   const [filePreview, setFilePreview] = useState('');
   const [postData, setPostData] = useState<Post>({
     title: '',
@@ -71,44 +71,19 @@ const PostEdit: React.FC<Props> = ({
   const editPost = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     const validationResult: boolean = await postSchema.isValid(postData);
-    if (validationResult) {
-      const editFormData: FormData = new FormData();
-      editFormData.append('title', postData.title);
-      editFormData.append('description', postData.description);
-      if (postData.photo && postData.photo.files && postData.photo.files[0]) {
-        editFormData.append('photo', postData.photo.files[0]);
-      }
-      editFormData.append('delete', String(notDelete));
-      try {
-        setLoading(true);
-        const editedPostResponse: [UserPost[], string] = await editUserPost(
-          postId,
-          editFormData,
-          token,
-        );
-        const allPosts: UserPost[] = editedPostResponse[0];
-        dispatch(editPosts(allPosts));
-        if (editedPostResponse[1] && notDelete) {
-          deleteImage(editedPostResponse[1].split('/')[7].split('?')[0]);
-        }
-        setPostData({
-          title: '',
-          description: '',
-          photo: null,
-        });
-        setNotDelete(false);
-        setLoading(false);
-        setBlur(false);
-        ToastNotifySuccess();
-      } catch (error) {
-        if (error instanceof Error) {
-          setLoading(false);
-          ToastNotifyError(error.message);
-        }
-      }
-    } else {
-      ToastNotifyError();
-    }
+    await usePostEdit({
+      validationResult,
+      postId,
+      setLoading,
+      postData,
+      setPostData,
+      setBlur,
+      setNotDelete,
+      notDelete,
+      token,
+      dispatch,
+    });
+    handleClose();
   };
   return (
     <div className='w-full'>
@@ -213,13 +188,12 @@ const PostEdit: React.FC<Props> = ({
               )}
             </div>
             <div className='w-full mt-3'>
-              <button
+              <CoreButton
+                loading={loadingEdit}
                 type='submit'
-                onClick={() => handleClose()}
-                className='w-full bg-yellow hover:bg-soft-yellow border-2 border-yellow text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in'
-              >
-                Edit post
-              </button>
+                styleClass='w-full flex justify-center items-center bg-yellow hover:bg-soft-yellow border-2 border-yellow text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in'
+                text='Edit PostHeader'
+              />
             </div>
           </form>
         </DialogContent>

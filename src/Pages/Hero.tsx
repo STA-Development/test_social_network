@@ -30,7 +30,7 @@ const Hero = () => {
               alt=''
             />
           </animated.div>
-          <h1 className='text-2xl sm:text-3xl transition duration-200 ease-in scale-125 text-gray-light '>
+          <h1 className='text-lg sm:text-3xl transition duration-200 ease-in scale-125 text-gray-light break-words'>
             Hello and Welcome to{' '}
             <span className='text-purple'>
               Connect<span className='text-orange'>Hub</span>
