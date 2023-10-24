@@ -25,6 +25,7 @@ module.exports = {
     'prefer-arrow-callback': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
+    'max-lines-per-function': ['error', 150],
     'react/function-component-definition': [
       2,
       {
