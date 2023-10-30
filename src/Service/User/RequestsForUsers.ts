@@ -1,33 +1,37 @@
 import { User, UserPost } from '../../types/typeSection';
 import http from '../../api/httpService';
 
-export const getAllPosts = async (): Promise<UserPost[]> => {
-  const { data } = await http.get('/post/getAllPosts');
+// * ___________-NEWS PAGE POSTS-___________
+export const getPostsForNewsPage = async (): Promise<UserPost[]> => {
+  const { data } = await http.get('/post/newsPagePosts');
   return data;
 };
-
+export const addNextPostsForNewsPage = async (
+  length: number,
+): Promise<UserPost[]> => {
+  const { data } = await http.get(`/post/newsPagePosts/${length}`);
+  return data;
+};
 export const allPostsLength = async () => {
-  const { data } = await http.get('/post/getAllPostsLength');
+  const { data } = await http.get('/post/length');
   return data;
 };
-export const allUserPostsLength = async (token: string) => {
-  const { data } = await http.get('/post/getAllUserPostsLength', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return data;
-};
+// * ___________-NEWS PAGE POSTS-___________
+
+// * ___________-USER POSTS-___________
 
 export const getCurrentUserPosts = async (
   user: User | null,
-  token: string,
 ): Promise<UserPost[]> => {
-  const { data } = await http.get(`/post/user/${user?.uId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const { data } = await http.get(`/post/userPosts/${user?.uId}`);
+  return data;
+};
+export const addNextUserPosts = async (length: number): Promise<UserPost[]> => {
+  const { data } = await http.get(`/post/nextUserPosts/${length}`);
+  return data;
+};
+export const allUserPostsLength = async () => {
+  const { data } = await http.get('/post/userPostsLength');
   return data;
 };
 export const createPost = async (
@@ -43,67 +47,37 @@ export const createPost = async (
   return data;
 };
 
-export const addNextTenPosts = async (length: number): Promise<UserPost[]> => {
-  const { data } = await http.get(`/post/getAllPosts/${length}`);
-  return data;
-};
-
-export const addUserNextTenPosts = async (
-  length: number,
-  token: string,
-): Promise<UserPost[]> => {
-  const { data } = await http.get(`/post/getUserAllPosts/${length}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return data;
-};
-
 export const editUserPost = async (
   postId: number,
   editFormData: FormData,
-  token: string,
-): Promise<[UserPost[], string]> => {
-  const { data } = await http.patch(`/post/edit/${postId}`, editFormData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-type': 'multipart/form-data',
-    },
-  });
-  return data;
-};
-
-export const deleteUserPost = async (
-  postId: number,
-  token: string,
 ): Promise<UserPost[]> => {
-  const { data } = await http.delete(`/post/delete/${postId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const { data } = await http.patch(`/post/edit/${postId}`, editFormData);
   return data;
 };
 
-export const addComment = async (
-  comment: string,
-  postId: number,
-  token: string,
-) => {
-  const { data } = await http.post(
-    '/comment/addComment',
-    { comment, postId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+export const deleteUserPost = async (postId: number): Promise<UserPost[]> => {
+  const { data } = await http.delete(`/post/delete/${postId}`);
+  return data;
+};
+// * ___________-USER POSTS-___________
+
+// * ___________-COMMENTS-___________
+
+export const addComment = async (comment: string, postId: number) => {
+  const { data } = await http.post('/comment/Add', { comment, postId });
   return data;
 };
 
 export const getComments = async (postId: number) => {
-  const { data } = await http.get(`comment/getAll/${postId}`);
+  const { data } = await http.get(`comment/${postId}`);
   return data;
 };
+
+// * ___________-COMMENTS-___________
+
+// * ___________-USER PROFILE-___________
+export const changeUserAvatar = async (file: FormData) => {
+  const { data } = await http.patch('user/changeAvatar', file);
+  return data;
+};
+// * ___________-USER PROFILE-___________

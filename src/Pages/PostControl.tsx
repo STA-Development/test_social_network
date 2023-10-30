@@ -5,9 +5,9 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Header from '../Components/Header';
 import { Post, User, UserPost } from '../types/typeSection';
 import { useAppDispatch, useAppSelector } from '../Hooks/hook';
-import ShowPosts from '../Components/ShowPosts';
+import ShowPosts from '../Components/Post/ShowPosts';
 import {
-  addUserNextTenPosts,
+  addNextUserPosts,
   allUserPostsLength,
   createPost,
   getCurrentUserPosts,
@@ -43,14 +43,14 @@ const PostControl = () => {
   }, [editedPosts]);
   const getUserPosts = async (): Promise<void> => {
     if (user?.uId !== '') {
-      const Posts: UserPost[] = await getCurrentUserPosts(user, token);
+      const Posts: UserPost[] = await getCurrentUserPosts(user);
       setLoading(true);
       setUserPost([...Posts]);
     }
   };
   const userPostsLength = async (): Promise<void> => {
     if (token) {
-      const getPostsLength: number = await allUserPostsLength(token);
+      const getPostsLength: number = await allUserPostsLength();
       setPostsLength(getPostsLength);
     }
   };
@@ -109,10 +109,7 @@ const PostControl = () => {
     }
   };
   const addMorePosts = async (): Promise<void> => {
-    const getMore: UserPost[] = await addUserNextTenPosts(
-      userPost.length,
-      token,
-    );
+    const getMore: UserPost[] = await addNextUserPosts(userPost.length);
     if (getMore.length === 0) {
       ToastNotifyError('you have no more posts  😕');
     }
@@ -202,7 +199,7 @@ const PostControl = () => {
             )}
             <div className='w-full mt-3'>
               <CoreButton
-                text='Add PostHeader'
+                text='Add PostBody'
                 loading={buttonLoading}
                 type='submit'
                 styleClass='w-full flex justify-center bg-hardBlue hover:bg-blue border-2 border-hardBlue text-white hover:text-w p-2 rounded transition duration-200 ease-in'

@@ -23,7 +23,7 @@ const Profile = () => {
   return (
     <>
       <Header />
-      <div className='w-full h-HeaderScreen flex flex-col'>
+      <div className='w-full h-HeaderScreen flex flex-col bg-back-white'>
         <div className='w-full relative bg-blue h-2/5'>
           <div className='w-full absolute left-0 right-0 mx-auto -bottom-80 container p-3'>
             {user && <ProfileSection user={user} />}

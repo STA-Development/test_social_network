@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import CommentDialogSection from './common/CommentDialogSection';
+import CommentDialogSection from './CommentDialogSection';
 import { addComment, getComments } from '../../Service/User/RequestsForUsers';
 import { useAppSelector } from '../../Hooks/hook';
 import { commentSchema } from '../../validator';
@@ -16,7 +16,6 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
   const user: User | null = useAppSelector((state) => state.auth.auth);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const token: string = useAppSelector((state) => state.auth.token);
   const [spinIsActive, setSpinIsActive] = useState<boolean>(false);
   const [postComments, setPostComments] = useState<CommentFromDB[]>([]);
   const handleClickOpen = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,7 +35,7 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
       if (user) {
         try {
           setLoading(true);
-          await addComment(formik.values.comment, postId, token);
+          await addComment(formik.values.comment, postId);
           setLoading(false);
           formik.values.comment = '';
           ToastNotifySuccess(
@@ -72,7 +71,7 @@ const CommentSection: React.FC<Props> = ({ postId }) => {
             onChange={formik.handleChange}
             value={formik.values.comment}
           />
-          <div className='w-full h-full flex items-center justify-between sm:items-center flex-wrap rounded-lg h-16'>
+          <div className='w-full h-full flex items-center justify-between sm:items-center flex-wrap rounded-lg'>
             <button
               type='button'
               onClick={(e) => handleClickOpen(e)}

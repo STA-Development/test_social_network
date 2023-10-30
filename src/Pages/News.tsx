@@ -3,12 +3,12 @@ import { Oval } from 'react-loader-spinner';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { ToastContainer } from 'react-toastify';
 import Header from '../Components/Header';
-import ShowPosts from '../Components/ShowPosts';
+import ShowPosts from '../Components/Post/ShowPosts';
 import { UserPost } from '../types/typeSection';
 import {
-  addNextTenPosts,
+  addNextPostsForNewsPage,
   allPostsLength,
-  getAllPosts,
+  getPostsForNewsPage,
 } from '../Service/User/RequestsForUsers';
 import { ToastNotifyError } from '../Helpers';
 import { useAppSelector } from '../Hooks/hook';
@@ -20,7 +20,7 @@ const News = () => {
   const [postsLength, setPostsLength] = useState<number>(0);
   useEffect((): void => {
     (async (): Promise<void> => {
-      const getPosts: UserPost[] = await getAllPosts();
+      const getPosts: UserPost[] = await getPostsForNewsPage();
       setLoading(true);
       setAllPosts([...getPosts]);
     })();
@@ -32,7 +32,7 @@ const News = () => {
     })();
   }, [token]);
   const addMorePosts = async (): Promise<void> => {
-    const getMore: UserPost[] = await addNextTenPosts(allPosts.length);
+    const getMore: UserPost[] = await addNextPostsForNewsPage(allPosts.length);
     if (getMore.length === 0) {
       ToastNotifyError('there is no more posts Sorry 😞');
     }

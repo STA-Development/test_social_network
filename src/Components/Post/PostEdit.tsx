@@ -6,11 +6,11 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Post, UserPost } from '../types/typeSection';
-import { postSchema } from '../validator';
-import usePostEdit from '../Hooks/usePostEdit';
-import { useAppDispatch, useAppSelector } from '../Hooks/hook';
-import CoreButton from './common/CoreButton';
+import { Post, UserPost } from '../../types/typeSection';
+import { postSchema } from '../../validator';
+import usePostEdit from '../../Hooks/usePostEdit';
+import { useAppDispatch, useAppSelector } from '../../Hooks/hook';
+import CoreButton from '../common/CoreButton';
 
 interface Props {
   open: boolean;
@@ -192,7 +192,7 @@ const PostEdit: React.FC<Props> = ({
                 loading={loadingEdit}
                 type='submit'
                 styleClass='w-full flex justify-center items-center bg-yellow hover:bg-soft-yellow border-2 border-yellow text-white-dark hover:text-gray-dark p-2 rounded transition duration-200 ease-in'
-                text='Edit PostHeader'
+                text='Edit PostBody'
               />
             </div>
           </form>

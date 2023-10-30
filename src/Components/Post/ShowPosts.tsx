@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { UserPost } from '../types/typeSection';
-import CommentSection from './Comments';
-import { DataEditor, ToastNotifySuccess } from '../Helpers';
+import { UserPost } from '../../types/typeSection';
+import CommentSection from '../Comments';
+import { DataEditor, ToastNotifySuccess } from '../../Helpers';
 import PostEdit from './PostEdit';
-import { deleteUserPost } from '../Service/User/RequestsForUsers';
-import { useAppSelector } from '../Hooks/hook';
-import CoreButton from './common/CoreButton';
-import usePostDelete from '../Hooks/usePostDelete';
+import { deleteUserPost } from '../../Service/User/RequestsForUsers';
+import CoreButton from '../common/CoreButton';
+import usePostDelete from '../../Hooks/usePostDelete';
+import PostBody from './PostBody';
 
 interface Props {
   userPost?: UserPost[] | undefined;
@@ -25,7 +25,6 @@ const ShowPosts: React.FC<Props> = ({
   postsLength,
   setPostsLength,
 }) => {
-  const token: string = useAppSelector((state) => state.auth.token);
   const [loadingEdit, setLoadingEdit] = useState<boolean>(false);
   const [loadingDelete, setLoadingDelete] = useState<number | null>(null);
   const [wholePost, setWholePost] = useState<UserPost>({} as UserPost);
@@ -42,11 +41,10 @@ const ShowPosts: React.FC<Props> = ({
     setCurrentPostId(postId);
     setWholePost({ ...post });
   };
-  const deletePost = async (postId: number, photo: string): Promise<void> => {
+  const deletePost = async (postId: number): Promise<void> => {
     setLoadingDelete(postId);
-    const restOfPosts: UserPost[] = await deleteUserPost(postId, token);
+    const restOfPosts: UserPost[] = await deleteUserPost(postId);
     await usePostDelete({
-      photo,
       setUserPost,
       restOfPosts,
       setLoadingDelete,
@@ -102,33 +100,16 @@ const ShowPosts: React.FC<Props> = ({
                         disabled={loadingDelete === post.id}
                         icon={<DeleteIcon />}
                         styleClass='w-32 p-1 flex justify-center  transition duration-300 ease-in-out hover:bg-soft-red text-red font-semibold border-2 border-red-500 hover:border-transparent rounded'
-                        onClick={() => deletePost(post.id, post.photo)}
+                        onClick={() => deletePost(post.id)}
                       />
                     </div>
                   )}
                 </div>
-                <div>
-                  <h1 className='text-2xl border-b-2 mb-3 border-hardBlue  text-hardBlue'>
-                    Title:
-                  </h1>
-                  <p className='text-left text-2xl mb-3 '>{post.title}:</p>
-                </div>
-                {post.photo && (
-                  <div className='flex h-full w-full bg-blue-400 justify-center items-center'>
-                    <img
-                      className='object-cover h-48'
-                      src={post.photo}
-                      alt=''
-                    />
-                  </div>
-                )}
-
-                <div className='mt-5 mb-3'>
-                  <p className='text-left border-b-2 mb-3 border-hardBlue text-hardBlue'>
-                    description:
-                  </p>
-                  <p className='text-left text-base '>{post.description}</p>
-                </div>
+                <PostBody
+                  title={post.title}
+                  photo={post.photo}
+                  description={post.description}
+                />
                 <CommentSection postId={post.id} />
               </div>
             </div>

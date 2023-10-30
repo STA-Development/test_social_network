@@ -13,10 +13,10 @@ const useAuth = () => {
         const { token } = authUserIdToken;
         dispatch(userToken(token));
         try {
-          const { data } = await http.get('userAuth/verifyUser');
+          const { data } = await http.get('user/Verify');
           dispatch(
             userAuth({
-              uId: data.user_id,
+              uId: data.uId,
               email: data.email,
               name: data.name,
               picture: data.picture,
