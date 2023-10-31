@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import { Oval } from 'react-loader-spinner';
 import { User } from '../../types/typeSection';
 import { changeUserAvatar } from '../../Service/User/RequestsForUsers';
+import { useAppDispatch } from '../../Hooks/hook';
+import { userAuth } from '../../Redux/Store/auth/authSlice';
 
 const ProfileSection: React.FC<{ user: User }> = ({ user }) => {
   const VisuallyHiddenInput = styled('input')({
@@ -20,12 +22,21 @@ const ProfileSection: React.FC<{ user: User }> = ({ user }) => {
   });
   const [userCredential, setUserCredential] = useState({ ...user });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
   const handleAvatarChange = async (element: FileList | null) => {
     if (element) {
       setIsLoading(true);
       const data: FormData = new FormData();
       data.append('file', element[0]);
       const url: string = await changeUserAvatar(data);
+      dispatch(
+        userAuth({
+          uId: user.uId,
+          email: user.email,
+          name: user.name,
+          picture: url,
+        }),
+      );
       setIsLoading(false);
       setUserCredential({ ...userCredential, picture: url });
     }
